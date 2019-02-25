@@ -1,0 +1,18 @@
+{% extends 'authapp/base.html' %}
+{% load static %}
+{% block content %}
+    <form class="profile-form" action="{% url 'auth:register' %}"
+          method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ registration_form.as_p }}
+        <div class="input-form__submit-buttons">
+            <input class="background button input-form__button"
+                   type="submit"
+                   value="Register">
+            <button type="reset"
+                    class="background button input-form__button">
+                Clear
+            </button>
+        </div>
+    </form>
+{% endblock %}

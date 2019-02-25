@@ -1,0 +1,58 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+<div class="contacts-header">
+    <div class="container">
+        <div class="background padding-content products-header">
+            {% include 'mainapp/widgets/header.html' %}
+            <div class="hhpb products-header-content">
+                <h2 class="products-header-h2">Contact Us</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="padding-content callback">
+        <div class="callback-form">
+            <form class="input-form">
+                <input type="text" name="name" placeholder="Name" required
+                       class="input-form__single-input"><br>
+                <input type="email" name="email" placeholder="Email" required
+                       class="input-form__single-input"><br>
+                <input type="text" name="topic" placeholder="Subject" required
+                       class="input-form__single-input"><br>
+                <textarea name="message" maxlength="140" required
+                          class="input-form__area-input"></textarea><br>
+                <div class="input-form__submit-buttons">
+                    <button type="submit" class="button input-form__button">
+                        Send
+                    </button>
+                    <button type="reset" class="button input-form__button">
+                        Clear
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="map">
+            <script async
+                    src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A255534894a81f387e92675e2a0608ba2b9a4a089f176764e969aa94e8bc4ae34&amp;width=744&amp;height=268&amp;lang=ru_RU&amp;scroll=true"></script>
+        </div>
+    </div>
+</div>
+
+<div class="address">
+    <div class="container">
+        <div class="padding-content padding-products-block products-block">
+            <div class="new-products">
+                {% for item in addresses %}
+                    {% if forloop.counter <= 3 %}
+                        {% include 'mainapp/include/inc_address.html' %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

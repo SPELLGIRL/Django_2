@@ -1,0 +1,62 @@
+{% load static %}
+{% load custom_tags %}
+<header class="header">
+    <a class="logo" href="{% url 'home:index' %}"><img
+            src="{% static 'img/logo.svg' %}" alt="logo"></a>
+    <nav>
+        <ul class="menu">
+            {% for item in main_menu_links %}
+                <li class="menu__list"><a
+                        href="{% url item.link %}{{ item.category }}"
+                        class="menu__link
+    {% if request.resolver_match.namespace|add:':index' == item.link or request.resolver_match.view_name == item.link %}
+        menu__link_active
+    {% endif %}">{{ item.title }}
+                </a>
+                </li>
+            {% endfor %}
+            {% if user.is_authenticated %}
+                <li class="menu__list">
+                    <a href="{% url 'auth:edit' %}"
+                       class="menu__link {% if request.resolver_match.view_name == 'auth:edit' %} menu__link_active {% endif %}">
+                        My Profile ({{ user.first_name|default:'user' }})
+                    </a>
+                </li>
+                {% if user.is_superuser %}
+                    <li class="menu__list">
+                        <a href="{% url 'admin:categories' %}"
+                           class="menu__link {% if request.resolver_match.namespace == 'admin' %} menu__link_active {% endif %}">
+                            Admin panel
+                        </a>
+                    </li>
+                {% endif %}
+                <li class="menu__list"><a href="{% url 'auth:logout' %}"
+                                          class="menu__link">logout</a></li>
+            {% else %}
+                <li class="menu__list">
+                    <a href="{% url 'auth:register' %}"
+                       class="menu__link {% if request.resolver_match.view_name == 'auth:register' %} menu__link_active {% endif %}">sign
+                        up
+                    </a>
+                </li>
+                <li class="menu__list"><a href="{% url 'auth:login' %}"
+                                          class="menu__link {% if request.resolver_match.view_name == 'auth:login' %} menu__link_active {% endif %}">sign
+                    in</a></li>
+            {% endif %}
+
+
+            <li class="menu__list search"><img
+                    src="{% static 'img/search.svg' %}" alt="search"></li>
+            <li class="menu__list search">
+                <a href="{% url 'basket:view' %}" alt="basket" class="basket">
+                    <span class="basket-info">
+                        {% if basket %}
+                            <p class="basket-item-total-quantity">{{ basket.0.total_quantity }} товаров</p>
+                            <p class="basket-item-total-cost">{{ basket.0.total_cost|currency }}</p>
+                        {% endif %}
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>

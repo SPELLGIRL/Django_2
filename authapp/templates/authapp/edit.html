@@ -1,0 +1,18 @@
+{% extends 'authapp/base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+    <form action="{% url 'auth:edit' %}"
+          method="post" enctype="multipart/form-data" class="profile-form">
+        {% csrf_token %}
+        {{ update_form.as_p }}
+        <div class="input-form__submit-buttons">
+            <input class="background button input-form__button"
+                   type="submit"
+                   value="Save">
+        </div>
+    </form>
+    <div class="background products__item user_avatar"
+         style="background-image: url({{ user.avatar|media_folder_files }})">
+    </div>
+{% endblock %}

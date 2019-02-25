@@ -1,0 +1,17 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div>
+        Уверены, что хотите удалить {{ model.title|title }}?
+        <form action="{% url 'admin:category_delete' model.pk %}"
+              method="post">
+            {% csrf_token %}
+            <input type="submit" value="Delete">
+        </form>
+        <button>
+            <a href="{% url 'admin:category_read' model.pk %}">Cancel</a>
+        </button>
+    </div>
+{% endblock %}

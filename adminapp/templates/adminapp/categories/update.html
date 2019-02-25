@@ -1,0 +1,15 @@
+{% extends 'adminapp/base.html' %}
+
+{% block content %}
+    <hr>
+
+    <h1 class="{% if not model.is_active %}not_is_active{% endif %}">{{ model.name|title }}</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Save">
+        <button>
+            <a href="{% url 'admin:category_read' model.pk %}">Cancel</a>
+        </button>
+    </form>
+{% endblock %}

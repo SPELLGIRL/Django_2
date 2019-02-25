@@ -1,0 +1,20 @@
+{% load static %}
+{% load custom_tags %}
+<div class="background products__item {% if size == 370 %} trendings__item {% endif %}"
+     style="background-image: url(
+             {% if item.small_img_path %}
+                 {{ item.small_img_path.url }}
+             {% else %}
+                 {{ item.big_img_path|media_folder_files }}
+             {% endif %}
+             )">
+    <div class="background hhpb products__item {% if size == 370 %} trendings__item {% endif %} products__item_hover">
+        <a href="{% url 'catalog:product' item.id %}"
+           class="background button button-arrow"><img
+                src="{% static 'img/arrow.png' %}" alt="arrow"
+                class="arrow-big">
+        </a>
+        <h4 class="products__item_hover_h4">{{ item.title|title }}</h4>
+        <p class="products__item_hover_p">{{ item.description|capfirst|safe }}</p>
+    </div>
+</div>

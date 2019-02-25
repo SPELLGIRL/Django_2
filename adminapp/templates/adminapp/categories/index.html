@@ -1,0 +1,18 @@
+{% extends 'adminapp/base.html' %}
+
+{% block content %}
+    <hr>
+
+    <h1>Categories list</h1>
+    <a href="{% url 'admin:category_create' %}">Create</a>
+    <ul>
+        {% for model in models %}
+            <li>
+                <a href="{% url 'admin:category_read' id=model.id %}"
+                   class="{% if not model.is_active %}not_is_active{% endif %}">
+                    {{ model.name|title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

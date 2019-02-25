@@ -1,0 +1,34 @@
+{% extends 'adminapp/base.html' %}
+
+{% block content %}
+    <hr>
+
+    <h1>Users list</h1>
+    <a href="{% url 'admin:user_create' %}">Create</a>
+    {% if page_obj.has_previous %}
+        <button>
+            <a href="{% url 'admin:users' %}/{{ page_obj.previous_page_number }}">Previous</a>
+        </button>
+    {% endif %}
+    {% if page_obj.has_next %}
+        <button>
+            <a href="{% url 'admin:users' %}/{{ page_obj.next_page_number }}">Next</a>
+        </button>
+    {% endif %}
+    <ul>
+        {% for user_profile in page_obj %}
+            <li>
+                <a href="{% url 'admin:user_read' pk=user_profile.id %}">
+                    <span class="
+                        {% if not user_profile.is_active %}
+                            not_is_active
+                        {% endif %}">
+                        {{ user_profile.username }}
+                    </span>
+                    ({{ user_profile.first_name|title }}
+                    {{ user_profile.last_name|title }})
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

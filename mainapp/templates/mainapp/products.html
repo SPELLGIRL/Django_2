@@ -1,0 +1,45 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="products-head">
+        <div class="container">
+            <div class="background padding-content products-header">
+                {% include 'mainapp/widgets/header.html' %}
+                <div class="hhpb products-header-content">
+                    <h2 class="products-header-h2">Our Products Range</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="products-products">
+        <div class="container">
+            <div class="padding-content padding-products-block padding-products-block__menu products-block">
+                <div class="products-heading">
+                    {% include 'mainapp/widgets/catalog_menu.html' %}
+                </div>
+                <div class="trending-products">
+                    {% with size=370 %}
+                        {% for item in provider %}
+                            {% include 'mainapp/include/inc_product_preview.html' %}
+                        {% endfor %}
+                    {% endwith %}
+                </div>
+                <div style="display: flex; align-self: center">
+                    {% if provider.has_previous %}
+                        <a href="
+                                {% url 'catalog:index' %}{{ current_product_category }}{{ provider.previous_page_number }}">Previous</a>
+                    {% endif %}
+                    <a href="#" class="refresh"><i class="fas fa-sync-alt"></i></a>
+                    {% if provider.has_next %}
+                        <a href="
+                                {% url 'catalog:index' %}{{ current_product_category }}{{ provider.next_page_number }}">Next</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="promo">
+        {% include 'mainapp/include/inc_promo.html' %}
+    </div>
+{% endblock %}

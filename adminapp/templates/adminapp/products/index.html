@@ -1,0 +1,50 @@
+{% extends 'adminapp/base.html' %}
+{% load staticfiles %}
+{% load custom_tags %}
+
+{% block content %}
+    <div class="products_list">
+        <h1>Категория: {{ category.name|title }}</h1>
+
+        <button class="new_product">
+            <a href={% url 'admin:product_create' category.pk %}>новый
+                продукт</a>
+        </button>
+        {% if provider.has_previous %}
+            <button>
+                <a href="{% url 'admin:products' category.pk %}{{ provider.previous_page_number }}">Previous</a>
+            </button>
+        {% endif %}
+
+        {% if provider.has_next %}
+            <button>
+                <a href="{% url 'admin:products' category.pk %}{{ provider.next_page_number }}">Next</a>
+            </button>
+        {% endif %}
+        <hr>
+        {% for object in provider %}
+            <div class="product_record">
+                <div class="product_name {% if not object.is_active %}not_is_active{% endif %}">
+                    <b>{{ object.title|title }}</b>
+                </div>
+                <div class="summary">
+                    <b>Цена: </b>{{ object.price|currency }}
+                    <b>Количество: </b>{{ object.quantity }}
+                </div>
+                <div class="product_actions">
+                    <button>
+                        <a href={% url 'admin:product_read' object.pk %}>подробнее</a>
+                    </button>
+                    <button>
+                        <a href={% url 'admin:product_update' object.pk %}>редактировать</a>
+                    </button>
+                    <button>
+                        <a href={% url 'admin:product_delete' object.pk %}>удалить</a>
+                    </button>
+                </div>
+
+            </div>
+            <hr>
+        {% endfor %}
+    </div>
+{% endblock %}

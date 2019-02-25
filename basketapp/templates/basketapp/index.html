@@ -1,0 +1,57 @@
+{% extends 'basketapp/base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+    <h4 class="basket-item-none" {% if basket %}hidden{% endif %}>Товаров
+        пока нет</h4>
+    <div class="basket-products">
+        {% if basket %}
+            <div class="basket-total-counters">
+                <p>Итого: <span
+                        class="basket-item-total-cost">{{ basket.0.total_cost|floatformat:0|currency }}</span>
+                </p>
+                <p>Общее количество: <span
+                        class="basket-item-total-quantity">({{ basket.0.total_quantity }}</span>
+                    шт)</p><br>
+            </div>
+            <ul>
+                {% for item in basket %}
+                    <li class="basket-item basket-item-{{ item.product_id }}">
+                        {% if forloop.counter <= 12 %}
+                            <p>
+                                <a href="{% url 'catalog:product' item.product_id %}">
+                                    {{ item.product.title|title }}
+                                </a>
+                            </p>
+                            Стоимость:
+                            <span class="basket-item-price">{{ item.product.price|currency }}</span>
+                            (Общая:
+                            <span class="basket-item-cost">{{ item.cost }}</span>
+                            $)<br>
+                            Количество:
+
+                            <button class="basket-item-remove"
+                                    {% if item.quantity == 1 %}
+                                    hidden
+                                    {% endif %}
+                                    data-id="{{ item.product_id }}">
+                                -
+                            </button>
+
+                            <span class="basket-item-quantity">{{ item.quantity }}</span>
+                            <button class="basket-item-add"
+                                    data-id="{{ item.product_id }}">
+                                +
+                            </button>
+                            <br>
+                            <button class="basket-item-delete"
+                                    data-id="{{ item.product_id }}">
+                                Удалить
+                            </button>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+{% endblock %}

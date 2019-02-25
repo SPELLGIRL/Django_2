@@ -1,0 +1,21 @@
+{% extends 'authapp/base.html' %}
+{% load static %}
+{% block content %}
+    <form class="profile-form" action="{% url 'auth:login' %}"
+          method="post">
+        {% csrf_token %}
+        {% if request.GET.next %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
+        {% endif %}
+        {{ login_form.as_p }}
+        <div class="input-form__submit-buttons">
+            <input class="background button input-form__button"
+                   type="submit"
+                   value="Login">
+            <button type="reset"
+                    class="background button input-form__button">
+                Clear
+            </button>
+        </div>
+    </form>
+{% endblock %}

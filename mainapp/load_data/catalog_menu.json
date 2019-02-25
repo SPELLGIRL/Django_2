@@ -1,0 +1,22 @@
+[
+  {
+    "title": "home",
+    "category": "home"
+  },
+  {
+    "title": "office",
+    "category": "office"
+  },
+  {
+    "title": "furniture",
+    "category": "furniture"
+  },
+  {
+    "title": "modern",
+    "category": "modern"
+  },
+  {
+    "title": "classic",
+    "category": "classic"
+  }
+]

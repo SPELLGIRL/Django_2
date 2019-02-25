@@ -1,0 +1,14 @@
+[
+  {
+    "title": "home",
+    "link": "home"
+  },
+  {
+    "title": "products",
+    "link": "catalog"
+  },
+  {
+    "title": "contact",
+    "link": "contacts"
+  }
+]

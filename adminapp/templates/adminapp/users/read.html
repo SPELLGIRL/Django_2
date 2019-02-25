@@ -1,0 +1,29 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+    <hr>
+    <h1 class="{% if not object.is_active %}not_is_active{% endif %}">
+        login: {{ object.username }}
+    </h1>
+    <ul>
+        {% if object.first_name %}
+            <li>Имя: {{ object.first_name }}</li>
+        {% endif %}
+        {% if object.last_name %}
+            <li>Фамилия: {{ object.last_name }}</li>
+        {% endif %}
+        <li>E-mail: {{ object.email }}</li>
+        <li>Возраст: {{ object.age }}</li>
+    </ul>
+    {% if object.avatar %}
+        <div class="background products__item user_avatar"
+             style="background-image: url({{ object.avatar|media_folder_files }}">
+        </div>
+    {% endif %}
+    <a href="{% url 'admin:user_update' pk=object.id %}">Update</a>
+    {% if object.is_active %}
+        <a href="{% url 'admin:user_delete' pk=object.id %}">Delete</a>
+    {% endif %}
+    <p><a href="{% url 'admin:users' %}">Back</a></p>
+{% endblock %}

@@ -1,0 +1,35 @@
+[
+  {
+    "name": "new"
+  },
+  {
+    "name": "featured"
+  },
+  {
+    "name": "exclusive"
+  },
+  {
+    "name": "trending"
+  },
+  {
+    "name": "hot"
+  },
+  {
+    "name": "promo"
+  },
+  {
+    "name": "home"
+  },
+  {
+    "name": "office"
+  },
+  {
+    "name": "furniture"
+  },
+  {
+    "name": "modern"
+  },
+  {
+    "name": "classic"
+  }
+]

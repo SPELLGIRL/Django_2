@@ -1,0 +1,35 @@
+{% load static %}
+{% load custom_tags %}
+<div class="container">
+    <div class="split">
+        {% for item in promo_products %}
+            {% if forloop.counter <= 2 %}
+                <div class="background split-1__all hhpb"
+                     style="background-image:
+                             url(
+                             {% if item.big_img_path %}
+                                 {{ item.big_img_path.url }}
+                             {% else %}
+                                 {{ item.small_img_path|media_folder_files }}
+                             {% endif %}
+                             )">
+                    <h4 class="exclusive-h4">
+                        {% for i in item.category.all %}
+                            {{ i }}
+                            {% if not forloop.last %}
+                                <br>
+                            {% endif %}
+                        {% endfor %}
+                    </h4>
+                    <h2 class="exclusive-h2">{{ item.title|title }}</h2>
+                    <p class="exclusive-p">{{ item.description|capfirst|safe }}</p>
+                    <a class="button button-order"
+                       href="{% url 'catalog:product' item.id %}">Order
+                        Us<img
+                                src="{% static 'img/arrow.png' %}" alt="arrow"
+                                class="arrow"></a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

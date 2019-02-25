@@ -1,0 +1,24 @@
+{% load static %}
+
+
+<div class="products__item contacts-info contacts-info-text">
+    <img src="{% static 'img/marker.png' %}" alt="marker">
+    <h4 class="contacts-info-h4">{{ item.city|title }}</h4>
+    <address>
+        <p class="contacts-info-p">
+            <span class="address-h">Phone:</span>
+            <br>
+            {{ item.phone|safe }}
+        </p>
+        <p class="contacts-info-p">
+            <span class="address-h">Email:</span>
+            <br>
+            {{ item.email|urlize }}
+        </p>
+        <p class="contacts-info-p">
+            <span class="address-h">Address:</span>
+            <br>
+            {{ item.address|safe }}
+        </p>
+    </address>
+</div>

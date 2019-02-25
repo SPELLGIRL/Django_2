@@ -1,0 +1,86 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+    <div class="detail-head">
+        <div class="container">
+            <div class="background padding-content detail-header">
+                {% include 'mainapp/widgets/header.html' %}
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-menu-block">
+        <div class="container">
+            {% include 'mainapp/widgets/catalog_menu.html' %}
+        </div>
+    </div>
+
+    <div class="description">
+        <div class="container">
+            <div class="split padding-description">
+                <div class="split-3__all hhpb split-3__1">
+                    <img src="{{ img_link }}"
+                         class="big-img" alt="Big image">
+                    <div class="colors">
+                        <a href="
+
+                                {% url 'catalog:product' product_id %}/blue"
+                           class="background small-img"></a>
+                        <a href="
+
+                                {% url 'catalog:product' product_id %}/purple"
+                           class="background small-img"></a>
+                        <a href="
+
+                                {% url 'catalog:product' product_id %}/red"
+                           class="background small-img"></a>
+                    </div>
+                </div>
+                <div class="split-3__all hhpb split-3__2">
+                    <h2 class="detail-h2">{{ current_product.title|title }}</h2>
+                    <h4 class="detail-h4">
+                        {% for i in current_product.category.all %}
+                            {{ i }}
+                            {% if not forloop.last %}
+                                <br>
+                            {% endif %}
+                        {% endfor %}
+                    </h4>
+                    <h1 class="detail-h1">
+                        <span class="price">{{ current_product.price|currency }}</span>/sq
+                    </h1>
+                    <a class="button button-order button-order_detail"
+                       href="{% url 'basket:add' current_product.pk %}">Order
+                        Us <i class="fas fa-angle-right"></i>
+                    </a>
+                    <div class="detail-text">
+                        <p class="detail-p">{{ current_product.full_description|capfirst|safe }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="trending">
+        <div class="container">
+            <div class="background padding-content padding-products-block products-block">
+                <div class="products-heading trendings-heading">
+                    <p class="trendings-title">Related Products</p>
+                    <a class="explore-all" href="{% url 'catalog:index' %}">explore
+                        all
+                        <i class="fas fa-angle-right"></i></a>
+                </div>
+                <div class="trending-products">
+                    {% with size=370 %}
+                        {% for item in same_products %}
+                            {% if forloop.counter <= 3 %}
+                                {% include 'mainapp/include/inc_product_preview.html' %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

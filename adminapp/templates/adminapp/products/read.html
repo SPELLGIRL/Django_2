@@ -1,0 +1,47 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+    <hr>
+    <div class="product_read">
+        <div class="product_name">
+            Продукт
+            <strong class="{% if not object.is_active %}not_is_active{% endif %}">
+                {{ object.title|title }}
+            </strong>
+        </div>
+        {% if object.small_img_path or object.big_img_path %}
+            <div class="background products__item"
+                 style="background-image: url(
+                         {% if object.small_img_path %}
+                             {{ object.small_img_path.url }}
+                         {% else %}
+                             {{ object.big_img_path|media_folder_files }}
+                         {% endif %}
+                         )">
+            </div>
+        {% endif %}
+        <div class="summary">
+            <p><b>Цена: </b>{{ object.price|currency }}</p>
+            <p><b>Количество: </b>{{ object.quantity }}</p>
+            <p><b>В каталоге: </b>{% if object.is_active %}да{% else %}
+                нет{% endif %}</p>
+            <a href="{% url 'admin:product_update' id=object.id %}">Update</a>
+            {% if object.is_active %}
+                <a href="{% url 'admin:product_delete' id=object.id %}">Delete</a>
+            {% endif %}
+            {% for category in categories %}
+                <p><a href="{% url 'admin:products' category.id %}">К товарам
+                    категории {{ category.name }}</a>
+                </p>
+            {% endfor %}
+        </div>
+        <hr>
+        <div class="product_desc">
+            <b>Краткая информация:</b>
+            <p>{{ object.description }}</p>
+            <b>Подробная информация:</b>
+            <p>{{ object.full_description }}</p>
+        </div>
+    </div>
+{% endblock %}

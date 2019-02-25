@@ -1,0 +1,10 @@
+{% load static %}
+<ul class="menu {% if request.resolver_match.url_name == 'product' %} background detail-menu {% endif %}">
+    {% for link in catalog_menu_links %}
+        <li class="menu__list">
+            <a href="{% url 'catalog:index' %}{{ link.category__name|lower }}"
+               class="menu__link products-menu__link {% if request.resolver_match.url_name == 'product' %} detail-menu__link {% endif %} {% if current_product_category == link.category__name|lower %} menu__link_active {% endif %}">{{ link.title }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

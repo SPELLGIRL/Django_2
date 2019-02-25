@@ -1,0 +1,186 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block content %}
+
+    <div class="first">
+        <div class="container">
+            <div class="background header-block padding-content slider slider-1">
+                {% include 'mainapp/widgets/header.html' %}
+                <div class="hhpb">
+                    <h4 class="main-h4">TRENDING</h4>
+                    <h2 class="main-h2">Fishnet Chair</h2>
+                    <p class="main-p">Seat and back with upholstery made of&nbsp;cold
+                        cure foam. Steel frame, available in&nbsp;matt
+                        powder-coated
+                        black or&nbsp;highly polished chrome.
+                    </p>
+                    <a class="background button button-order"
+                       href="{% url 'catalog:index' %}">Order Us<img
+                            src="{% static 'img/arrow.png' %}"
+                            alt="arrow"
+                            class="arrow">
+                    </a>
+                </div>
+                <div class="pagination">
+                    <a href="#" class="circle"></a>
+                    <a href="#" class="circle circle_active"></a>
+                    <a href="#" class="circle"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <main>
+        {% if new_menu_links or new_menu_products %}
+            <div class="new">
+                <div class="container">
+                    <div class="background padding-content padding-products-block products-block">
+                        {% if new_menu_links %}
+                            <div class="products-heading">
+                                {% include 'mainapp/widgets/new_menu.html' %}
+                                <a class="explore-all"
+                                   href="{% url 'catalog:index' %}">
+                                    explore all <i
+                                        class="fas fa-angle-right"></i></a>
+                            </div>
+                        {% endif %}
+                        {% if new_menu_products %}
+                            <div class="new-products">
+                                {% for item in new_menu_products %}
+                                    {% if forloop.counter <= 6 %}
+                                        {% include 'mainapp/include/inc_product_preview.html' %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="promo">
+            {% include 'mainapp/include/inc_promo.html' %}
+        </div>
+
+        {% if trending_products %}
+            <div class="trending">
+                <div class="container">
+                    <div class="background padding-content padding-products-block products-block">
+                        <div class="products-heading trendings-heading">
+                            <p class="trendings-title">Trending Products</p>
+                            <a class="explore-all"
+                               href="{% url 'catalog:index' %}">
+                                explore all <i class="fas fa-angle-right"></i></a>
+                        </div>
+                        <div class="trending-products">
+                            {% with size=370 %}
+                                {% for item in trending_products %}
+                                    {% if forloop.counter <= 6 %}
+                                        {% include 'mainapp/include/inc_product_preview.html' %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="hot">
+            <div class="container">
+                <div class="background padding-content slider slider-2">
+                    <div class="hhpb">
+                        <h4 class="main-h4 hot-h4">Hot deal</h4>
+                        <h2 class="main-h2 hot-h2">Fishnet Chair</h2>
+                        <p class="main-p hot-p">
+                            Seat and back with upholstery made of&nbsp;cold
+                            cure foam. Steel frame, available in&nbsp;matt
+                            powder-coated black or&nbsp;highly polished chrome.
+                        </p>
+                        <a class="background button button-order"
+                           href="{% url 'catalog:index' %}">Order Us<img
+                                src="{% static 'img/arrow.png' %}"
+                                alt="arrow"
+                                class="arrow">
+                        </a>
+                    </div>
+                    <div class="pagination">
+                        <a href="#" class="circle"></a>
+                        <a href="#" class="circle circle_active"></a>
+                        <a href="#" class="circle"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if exclusive_products %}
+            <div class="exclusive">
+                <div class="container">
+                    <div class="padding-content padding-products-block split">
+                        {% with item=exclusive_products|first %}
+                            <section
+                                    class="background split-2__all hhpb split-2__1"
+                                    style="background-image: url(
+                                            {% if item.small_img_path %}
+                                                {{ item.small_img_path.url }}
+                                            {% else %}
+                                                {{ item.big_img_path|media_folder_files }}
+                                            {% endif %}
+                                            )">
+                                <h4 class="exclusive-h4">
+                                    {% for i in item.category.all %}
+                                        {{ i }}
+                                        {% if not forloop.last %}
+                                            <br>
+                                        {% endif %}
+                                    {% endfor %}
+                                </h4>
+                                <h2 class="exclusive-h2">{{ item.title|title }}</h2>
+                                <p class="exclusive-p">
+                                    {{ item.description|capfirst|safe }}
+                                </p>
+                                <a class="background button button-order"
+                                   href="{% url 'catalog:product' item.id %}">Order
+                                    Us<img
+                                            src="{% static 'img/arrow.png' %}"
+                                            alt="arrow"
+                                            class="arrow">
+                                </a>
+                            </section>
+                        {% endwith %}
+                        <section
+                                class="split-2__all exclusive-products split-2__2">
+                            {% for item in exclusive_products %}
+                                {% if forloop.counter != 1 %}
+                                    {% if forloop.counter <= 5 %}
+                                        {% include 'mainapp/include/inc_product_preview.html' %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </section>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="mobile">
+            <div class="container">
+                <div class="background padding-content hhpb mobile-block">
+                    <h4 class="mobile-h4">mobile app</h4>
+                    <h2 class="mobile-h2">Find. Follow. Favorite.</h2>
+                    <p class="mobile-p">
+                        Save your favorites and share your style.
+                    </p>
+                    <div class="mobile-links">
+                        <a class="background button mobile-links__all" href="#"
+                           style="background-image: url({% static 'img/app-store.jpg' %})"></a>
+                        <a class="background button mobile-links__all" href="#"
+                           style="background-image: url({% static 'img/google-play.jpg' %})"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}
