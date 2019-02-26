@@ -8,6 +8,7 @@ from django.core.mail import send_mail
 from .forms import LoginForm, RegisterForm, UpdateForm
 from mainapp.models import MainMenu
 from basketapp.models import Basket
+from .models import CustomUser
 
 main_menu_links = MainMenu.objects.all()
 
@@ -116,3 +117,28 @@ def send_verify_mail(user):
 
     return send_mail(title, message, settings.EMAIL_HOST_USER, [user.email],
                      fail_silently=False)
+
+
+def verify(request: HttpRequest, email, activation_key):
+    title = 'Verification'
+    
+    inner_content = {
+        'title': title,
+        'basket': get_basket(request.user),
+    }
+
+    inner_content = {**content, **inner_content}
+    try:
+        user = CustomUser.objects.get(email=email)
+
+        if user.activation_key == activation_key and not user.is_activation_key_expired():
+            user.is_active = True
+            user.save()
+            auth.login(request, user)
+            return render(request, 'authapp/verification.html', inner_content)
+        else:
+            print(f'error activation user: {user}')
+            return render(request, 'authapp/verification.html')
+    except Exception as e:
+        print(f'error activation user : {e.args}')
+        return HttpResponseRedirect(reverse('home'))
