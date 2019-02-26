@@ -9,12 +9,12 @@ from adminapp.models.categories import CategoryEditForm
 def index(request: HttpRequest):
     models = Category.objects.all()
 
-    content = {
+    context = {
         'title': 'Categories list',
         'models': models,
     }
 
-    return render(request, 'adminapp/categories/index.html', content)
+    return render(request, 'adminapp/categories/index.html', context)
 
 
 @user_passes_test(lambda user: user.is_superuser)
@@ -27,24 +27,24 @@ def create(request: HttpRequest):
     else:
         form = CategoryEditForm()
 
-    content = {
+    context = {
         'title': 'Category create',
         'form': form,
     }
 
-    return render(request, 'adminapp/categories/update.html', content)
+    return render(request, 'adminapp/categories/update.html', context)
 
 
 @user_passes_test(lambda user: user.is_superuser)
 def read(request: HttpRequest, id):
     model = get_object_or_404(Category, pk=id)
-    content = {
+    context = {
         'title': 'Category',
         'model': model,
         'products': model.products.all()[:20],
     }
 
-    return render(request, 'adminapp/categories/read.html', content)
+    return render(request, 'adminapp/categories/read.html', context)
 
 
 @user_passes_test(lambda user: user.is_superuser)
@@ -61,13 +61,13 @@ def update(request: HttpRequest, id):
     else:
         form = CategoryEditForm(instance=model)
 
-    content = {
+    context = {
         'title': 'Category update',
         'form': form,
         'model': model,
     }
 
-    return render(request, 'adminapp/categories/update.html', content)
+    return render(request, 'adminapp/categories/update.html', context)
 
 
 @user_passes_test(lambda user: user.is_superuser)
@@ -79,9 +79,9 @@ def delete(request: HttpRequest, id):
         model.save()
         return HttpResponseRedirect(reverse('admin:categories'))
 
-    content = {
+    context = {
         'title': 'Category delete',
         'model': model
     }
 
-    return render(request, 'adminapp/categories/delete.html', content)
+    return render(request, 'adminapp/categories/delete.html', context)

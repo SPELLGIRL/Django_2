@@ -6,15 +6,8 @@ from django.conf import settings
 from django.core.mail import send_mail
 
 from .forms import LoginForm, RegisterForm, UpdateForm
-from mainapp.models import MainMenu
 from basketapp.models import Basket
 from .models import CustomUser
-
-main_menu_links = MainMenu.objects.all()
-
-content = {
-    'main_menu_links': main_menu_links
-}
 
 
 def get_basket(user):
@@ -38,12 +31,11 @@ def login(request: HttpRequest):
             auth.login(request, user)
             return HttpResponseRedirect(next_url)
 
-    inner_content = {
+    context = {
         'title': title,
         'login_form': login_form
     }
-    inner_content = {**content, **inner_content}
-    return render(request, 'authapp/login.html', inner_content)
+    return render(request, 'authapp/login.html', context)
 
 
 def logout(request: HttpRequest):
@@ -72,13 +64,12 @@ def register(request: HttpRequest):
     else:
         register_form = RegisterForm()
 
-    inner_content = {
+    context = {
         'title': title,
         'registration_form': register_form
     }
-    inner_content = {**content, **inner_content}
 
-    return render(request, 'authapp/register.html', inner_content)
+    return render(request, 'authapp/register.html', context)
 
 
 def edit(request: HttpRequest):
@@ -95,15 +86,12 @@ def edit(request: HttpRequest):
     else:
         update_form = UpdateForm(instance=request.user)
 
-    inner_content = {
+    context = {
         'title': title,
         'update_form': update_form,
-        'basket': get_basket(request.user),
     }
 
-    inner_content = {**content, **inner_content}
-
-    return render(request, 'authapp/edit.html', inner_content)
+    return render(request, 'authapp/edit.html', context)
 
 
 def send_verify_mail(user):
@@ -121,13 +109,11 @@ def send_verify_mail(user):
 
 def verify(request: HttpRequest, email, activation_key):
     title = 'Verification'
-    
-    inner_content = {
+
+    context = {
         'title': title,
-        'basket': get_basket(request.user),
     }
 
-    inner_content = {**content, **inner_content}
     try:
         user = CustomUser.objects.get(email=email)
 
@@ -135,10 +121,10 @@ def verify(request: HttpRequest, email, activation_key):
             user.is_active = True
             user.save()
             auth.login(request, user)
-            return render(request, 'authapp/verification.html', inner_content)
+            return render(request, 'authapp/verification.html', context)
         else:
             print(f'error activation user: {user}')
-            return render(request, 'authapp/verification.html')
+            return render(request, 'authapp/verification.html', context)
     except Exception as e:
         print(f'error activation user : {e.args}')
         return HttpResponseRedirect(reverse('home'))
