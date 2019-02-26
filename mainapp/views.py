@@ -2,16 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpRequest
 from .models import Product, Category, CatalogMenu, NewMenu, Address
-from basketapp.models import Basket
 from random import sample
 import os
-
-
-def get_basket(user):
-    if user.is_authenticated:
-        return Basket.objects.filter(user=user)
-    else:
-        return None
 
 
 def index(request: HttpRequest, current_product_category=''):

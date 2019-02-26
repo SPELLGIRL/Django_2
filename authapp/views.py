@@ -6,15 +6,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 
 from .forms import LoginForm, RegisterForm, UpdateForm
-from basketapp.models import Basket
 from .models import CustomUser
-
-
-def get_basket(user):
-    if user.is_authenticated:
-        return Basket.objects.filter(user=user)
-    else:
-        return []
 
 
 def login(request: HttpRequest):
