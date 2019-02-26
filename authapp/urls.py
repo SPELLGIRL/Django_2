@@ -9,5 +9,7 @@ urlpatterns = [
     path('login/', controller.login, name='login'),
     path('logout/', controller.logout, name='logout'),
     path('register/', controller.register, name='register'),
-    path('edit/', controller.edit, name='edit')
+    path('edit/', controller.edit, name='edit'),
+    path('verify//<str:email>)/<str:activation_key>)/',
+         controller.send_verify_mail, name='verify'),
 ]

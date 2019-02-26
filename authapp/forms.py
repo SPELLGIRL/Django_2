@@ -5,6 +5,9 @@ from django import forms
 
 from authapp.models import CustomUser
 
+import random
+import hashlib
+
 
 class LoginForm(AuthenticationForm):
     class Meta:
@@ -43,6 +46,18 @@ class RegisterForm(UserCreationForm):
             raise forms.ValidationError(
                 "Регистрация доступна для пользователей старше 14 лет!")
         return data
+
+    def save(self, commit=True):
+        user = super(RegisterForm, self).save(commit=False)
+
+        user.is_active = False
+        salt = hashlib.sha1(str(random.random()).encode('utf8')).hexdigest()[
+               :6]
+        user.activation_key = hashlib.sha1(
+            (user.email + salt).encode('utf8')).hexdigest()
+        user.save()
+
+        return user
 
 
 class UpdateForm(UserChangeForm):

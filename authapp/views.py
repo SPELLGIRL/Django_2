@@ -2,6 +2,8 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.http import HttpRequest
 from django.contrib import auth
 from django.urls import reverse
+from django.conf import settings
+from django.core.mail import send_mail
 
 from .forms import LoginForm, RegisterForm, UpdateForm
 from mainapp.models import MainMenu
@@ -59,7 +61,11 @@ def register(request: HttpRequest):
         register_form = RegisterForm(request.POST, request.FILES)
 
         if register_form.is_valid():
-            register_form.save()
+            user = register_form.save()
+            if send_verify_mail(user):
+                print('сообщение подтверждения отправлено')
+            else:
+                print('ошибка отправки сообщения')
             return HttpResponseRedirect(reverse('auth:login'))
 
     else:
@@ -98,3 +104,15 @@ def edit(request: HttpRequest):
 
     return render(request, 'authapp/edit.html', inner_content)
 
+
+def send_verify_mail(user):
+    verify_link = reverse('auth:verify',
+                          args=[user.email, user.activation_key])
+
+    title = f'Confirm registration {user.username}'
+
+    message = f'Для подтверждения учетной записи {user.username} на портале \
+{settings.DOMAIN_NAME} перейдите по ссылке: \n{settings.DOMAIN_NAME}{verify_link}'
+
+    return send_mail(title, message, settings.EMAIL_HOST_USER, [user.email],
+                     fail_silently=False)
