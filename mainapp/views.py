@@ -1,23 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpRequest
-from .models import Product, Category, CatalogMenu, MainMenu, NewMenu, Address
-from basketapp.models import Basket
+from .models import Product, Category, CatalogMenu, NewMenu, Address
 from random import sample
 import os
-
-main_menu_links = MainMenu.objects.all()
-
-content = {
-    'main_menu_links': main_menu_links
-}
-
-
-def get_basket(user):
-    if user.is_authenticated:
-        return Basket.objects.filter(user=user)
-    else:
-        return None
 
 
 def index(request: HttpRequest, current_product_category=''):
@@ -46,12 +32,11 @@ def index(request: HttpRequest, current_product_category=''):
 
     used_product_categories = ['trending', 'exclusive', 'promo', 'hot']
 
-    inner_content = {
+    context = {
         'title': 'Main',
         'new_menu_links': new_menu_links,
         'current_product_category': current_product_category,
         'new_menu_products': new_menu_products,
-        'basket': get_basket(request.user),
     }
 
     for category in used_product_categories:
@@ -59,11 +44,10 @@ def index(request: HttpRequest, current_product_category=''):
             _temp = list(Product.objects.filter(category__name=category,
                                                 is_active=True))
             if _temp:
-                inner_content[category + '_products'] = sample(_temp,
-                                                               len(_temp))
+                context[category + '_products'] = sample(_temp,
+                                                         len(_temp))
 
-    inner_content = {**content, **inner_content}
-    return render(request, 'mainapp/index.html', inner_content)
+    return render(request, 'mainapp/index.html', context)
 
 
 def products(request: HttpRequest, current_product_category='', page=1):
@@ -94,12 +78,11 @@ def products(request: HttpRequest, current_product_category='', page=1):
 
     used_product_categories = ['exclusive', 'promo']
 
-    inner_content = {
+    context = {
         'title': 'Catalog',
         'catalog_menu_links': catalog_menu_links,
         'current_product_category': current_product_category,
         'provider': products_provider,
-        'basket': get_basket(request.user),
     }
 
     for category in used_product_categories:
@@ -107,12 +90,10 @@ def products(request: HttpRequest, current_product_category='', page=1):
             _temp = list(Product.objects.filter(category__name=category,
                                                 is_active=True))
             if _temp:
-                inner_content[category + '_products'] = sample(_temp,
-                                                               len(_temp))
+                context[category + '_products'] = sample(_temp,
+                                                         len(_temp))
 
-    inner_content = {**content, **inner_content}
-
-    return render(request, 'mainapp/products.html', inner_content)
+    return render(request, 'mainapp/products.html', context)
 
 
 def details(request: HttpRequest, product_id=None, color=None, size=None):
@@ -138,7 +119,7 @@ def details(request: HttpRequest, product_id=None, color=None, size=None):
         Product.objects.exclude(pk=product_id).filter(is_active=True,
                                                       category__in=current_product.category.filter(
                                                           is_active=True)))
-    inner_content = {
+    context = {
         'title': current_product.title,
         'catalog_menu_links': catalog_menu_links,
         'color': color,
@@ -148,19 +129,15 @@ def details(request: HttpRequest, product_id=None, color=None, size=None):
         'same_products': sample(same_products, len(same_products)),
         'product_desc': current_product.full_description,
         'product_price': current_product.price,
-        'basket': get_basket(request.user),
     }
-    inner_content = {**content, **inner_content}
 
-    return render(request, 'mainapp/details.html', inner_content)
+    return render(request, 'mainapp/details.html', context)
 
 
 def contacts(request: HttpRequest):
     addresses = list(Address.objects.all())
-    inner_content = {
+    context = {
         'addresses': addresses,
         'title': 'Contacts',
-        'basket': get_basket(request.user),
     }
-    inner_content = {**content, **inner_content}
-    return render(request, 'mainapp/contacts.html', inner_content)
+    return render(request, 'mainapp/contacts.html', context)

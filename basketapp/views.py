@@ -3,26 +3,16 @@ from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, \
 from django.http import HttpRequest, JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Basket
-from mainapp.models import Product, MainMenu
-
-main_menu_links = MainMenu.objects.all()
-
-content = {
-    'main_menu_links': main_menu_links
-}
+from mainapp.models import Product
 
 
 @login_required
 def basket(request: HttpRequest):
-    inner_content = {
+    context = {
         'title': 'Cart',
-        'basket': Basket.objects.filter(user=request.user).order_by(
-            'product__category')
     }
 
-    inner_content = {**content, **inner_content}
-
-    return render(request, 'basketapp/index.html', inner_content)
+    return render(request, 'basketapp/index.html', context)
 
 
 @login_required

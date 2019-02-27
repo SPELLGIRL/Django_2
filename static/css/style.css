@@ -1376,7 +1376,6 @@ p {
 .basket-products {
     display: flex;
     flex-direction: column;
-    margin-left: 20%;
 }
 
 .basket {
