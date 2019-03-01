@@ -1352,11 +1352,17 @@ p {
 }
 
 .profile-form {
-    height: 200px;
+    height: 400px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.profile-form > p > label, textarea {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .user_avatar {

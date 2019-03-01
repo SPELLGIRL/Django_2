@@ -3,7 +3,8 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, \
 
 from django import forms
 
-from authapp.models import CustomUser
+from .models import CustomUser
+from .models import CustomUserProfile
 
 import random
 import hashlib
@@ -86,3 +87,17 @@ class UpdateForm(UserChangeForm):
             raise forms.ValidationError(
                 "Ресурс доступен толеео для пользователей старше 14 лет!")
         return data
+
+
+class CustomUserProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = CustomUserProfile
+        fields = ('tagline', 'aboutMe', 'gender')
+
+    def __init__(self, *args, **kwargs):
+        super(CustomUserProfileEditForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'input-form__single-input'
+            if field_name == 'aboutMe':
+                field.widget.attrs['class'] = 'input-form__area-input'
+            field.help_text = ''

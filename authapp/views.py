@@ -4,8 +4,10 @@ from django.contrib import auth
 from django.urls import reverse
 from django.conf import settings
 from django.core.mail import send_mail
+from django.db import transaction
 
-from .forms import LoginForm, RegisterForm, UpdateForm
+from .forms import LoginForm, RegisterForm, UpdateForm, \
+    CustomUserProfileEditForm
 from .models import CustomUser
 
 
@@ -70,17 +72,22 @@ def edit(request: HttpRequest):
     if request.method == 'POST':
         update_form = UpdateForm(request.POST, request.FILES,
                                  instance=request.user)
+        profile_form = CustomUserProfileEditForm(request.POST,
+                                                 instance=request.user.customuserprofile)
 
-        if update_form.is_valid():
+        if update_form.is_valid() and profile_form.is_valid():
             update_form.save()
             return HttpResponseRedirect(reverse('auth:edit'))
 
     else:
         update_form = UpdateForm(instance=request.user)
+        profile_form = CustomUserProfileEditForm(
+            instance=request.user.customuserprofile)
 
     context = {
         'title': title,
         'update_form': update_form,
+        'profile_form': profile_form,
     }
 
     return render(request, 'authapp/edit.html', context)
