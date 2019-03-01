@@ -1114,18 +1114,10 @@ p {
 
 .input-form__button {
     font-size: 13px;
-
     display: inline-block;
-
     padding: 5px 10px;
-
     letter-spacing: 1px;
-
     outline: none;
-}
-
-.input-form__button:visited {
-
 }
 
 .input-form__submit-buttons {

@@ -42,9 +42,9 @@ class RegisterForm(UserCreationForm):
 
     def clean_age(self):
         data = self.cleaned_data['age']
-        if data < 14:
+        if data < 18:
             raise forms.ValidationError(
-                "Регистрация доступна для пользователей старше 14 лет!")
+                "Регистрация доступна для пользователей старше 18 лет!")
         return data
 
     def save(self, commit=True):
@@ -64,8 +64,8 @@ class UpdateForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = (
-            'username',
             'first_name',
+            'last_name',
             'email',
             'age',
             'avatar',
