@@ -17,5 +17,9 @@
                 Clear
             </button>
         </div>
+        <a href="{% url 'social:begin' 'vk-oauth2' %}?next=/"
+           class="background button input-form__button">
+            VK
+        </a>
     </form>
 {% endblock %}
