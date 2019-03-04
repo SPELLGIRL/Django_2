@@ -7,9 +7,11 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Save">
-        <button>
-            <a href="{% url 'admin:category_read' model.pk %}">Cancel</a>
+        <button type="submit" class="form-control">
+            Save
+        </button>
+        <button type="button" class="form-control">
+            <a href="{% url 'admin:categories'%}">Cancel</a>
         </button>
     </form>
 {% endblock %}

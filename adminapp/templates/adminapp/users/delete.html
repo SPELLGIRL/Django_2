@@ -8,7 +8,9 @@
         <form action="{% url 'admin:user_delete' object.pk %}"
               method="post">
             {% csrf_token %}
-            <input type="submit" value="Delete">
+            <button type="submit">
+                Delete
+            </button>
         </form>
         <button>
             <a href="{% url 'admin:user_read' object.pk %}">Cancel</a>

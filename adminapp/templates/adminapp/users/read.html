@@ -8,13 +8,13 @@
     </h1>
     <ul>
         {% if object.first_name %}
-            <li>Имя: {{ object.first_name }}</li>
+            <li class="menu__list">Имя: {{ object.first_name }}</li>
         {% endif %}
         {% if object.last_name %}
-            <li>Фамилия: {{ object.last_name }}</li>
+            <li class="menu__list">Фамилия: {{ object.last_name }}</li>
         {% endif %}
-        <li>E-mail: {{ object.email }}</li>
-        <li>Возраст: {{ object.age }}</li>
+        <li class="menu__list">E-mail: {{ object.email }}</li>
+        <li class="menu__list">Возраст: {{ object.age }}</li>
     </ul>
     {% if object.avatar %}
         <div class="background products__item user_avatar"

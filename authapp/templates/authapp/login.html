@@ -9,17 +9,27 @@
         {% endif %}
         {{ login_form.as_p }}
         <div class="input-form__submit-buttons">
-            <input class="background button input-form__button"
-                   type="submit"
-                   value="Login">
+            {#            <input class="background button input-form__button"#}
+            {#                   type="submit"#}
+            {#                   value="Login">#}
+            <button class="background button input-form__button"
+                    type="submit">
+                Login
+            </button>
             <button type="reset"
                     class="background button input-form__button">
                 Clear
             </button>
+            <button class="background button input-form__button" type="button">
+                <a href="{% url 'social:begin' 'vk-oauth2' %}?next=/">
+                    VK
+                </a>
+            </button>
         </div>
-        <a href="{% url 'social:begin' 'vk-oauth2' %}?next=/"
-           class="background button input-form__button">
-            VK
-        </a>
+
+        {#        <a href="{% url 'social:begin' 'vk-oauth2' %}?next=/"#}
+        {#{#           class="background button input-form__button">#}
+        {#{#            VK#}
+        {#{#        </a>#}
     </form>
 {% endblock %}

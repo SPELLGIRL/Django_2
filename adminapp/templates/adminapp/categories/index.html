@@ -7,7 +7,7 @@
     <a href="{% url 'admin:category_create' %}">Create</a>
     <ul>
         {% for model in models %}
-            <li>
+            <li class="menu__list">
                 <a href="{% url 'admin:category_read' id=model.id %}"
                    class="{% if not model.is_active %}not_is_active{% endif %}">
                     {{ model.name|title }}

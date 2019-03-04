@@ -2,16 +2,20 @@
 
 {% block content %}
     <hr>
-
     <h1 class="{% if not model.is_active %}not_is_active{% endif %}">{{ model.name|title }}</h1>
-    <a href="{% url 'admin:category_update' id=model.id %}">Update</a>
-    {% if model.is_active %}
-        <a href="{% url 'admin:category_delete' id=model.id %}">Delete</a>
-    {% endif %}
-    <h2>Products:</h2>
+    <ul>
+        <li class="menu__list"><a
+                href="{% url 'admin:category_update' id=model.id %}">Update</a>
+        </li>
+        <li class="menu__list">{% if model.is_active %}
+            <a href="{% url 'admin:category_delete' id=model.id %}">Delete</a>
+        {% endif %}
+        </li>
+    </ul>
+    <h4>Products:</h4>
     <ul>
         {% for product in products %}
-            <li>
+            <li class="menu__list">
                 <a href="{% url 'admin:product_read' id=product.id %}">
                     {{ product.title|title }}
                 </a>

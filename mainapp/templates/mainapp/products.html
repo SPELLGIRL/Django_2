@@ -25,15 +25,22 @@
                         {% endfor %}
                     {% endwith %}
                 </div>
-                <div style="display: flex; align-self: center">
+                <div class="product-pagination">
                     {% if provider.has_previous %}
                         <a href="
-                                {% url 'catalog:index' %}{{ current_product_category }}{{ provider.previous_page_number }}">Previous</a>
+                                {% url 'catalog:index' %}{{ current_product_category }}{{ provider.previous_page_number }}"
+                           class="button product-pagination__button">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
                     {% endif %}
-                    <a href="#" class="refresh"><i class="fas fa-sync-alt"></i></a>
+                    <a href="{% url 'catalog:index' %}{{ current_product_category }}{{ provider.number }}" class="refresh"><i class="fas fa-sync-alt"></i></a>
                     {% if provider.has_next %}
                         <a href="
-                                {% url 'catalog:index' %}{{ current_product_category }}{{ provider.next_page_number }}">Next</a>
+                                {% url 'catalog:index' %}{{ current_product_category }}{{ provider.next_page_number }}"
+                           class="button product-pagination__button">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+
                     {% endif %}
                 </div>
             </div>

@@ -17,7 +17,7 @@
     {% endif %}
     <ul>
         {% for user_profile in page_obj %}
-            <li>
+            <li class="menu__list">
                 <a href="{% url 'admin:user_read' pk=user_profile.id %}">
                     <span class="
                         {% if not user_profile.is_active %}

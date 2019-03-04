@@ -9,8 +9,10 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Save">
-        <button>
+        <button type="submit" class="form-control">
+            Save
+        </button>
+        <button type="button" class="form-control">
             <a href="
                         {% if object_list %}
                         {% url 'admin:user_read' object_list.pk %}

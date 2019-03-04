@@ -10,6 +10,11 @@ import random
 import hashlib
 
 
+class MyClearableFileInput(forms.ClearableFileInput):
+    initial_text = ''
+    template_name = 'authapp/widgets/MyClearableFileInput.html'
+
+
 class LoginForm(AuthenticationForm):
     class Meta:
         model = CustomUser
@@ -72,11 +77,14 @@ class UpdateForm(UserChangeForm):
             'avatar',
             'password'
         )
+        widgets = {
+            'avatar': MyClearableFileInput,
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'input-form__single-input'
+            field.widget.attrs['class'] = 'form-control'
             field.help_text = ''
             if field_name == 'password':
                 field.widget = forms.HiddenInput()
@@ -97,7 +105,5 @@ class CustomUserProfileEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CustomUserProfileEditForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'input-form__single-input'
-            if field_name == 'aboutMe':
-                field.widget.attrs['class'] = 'input-form__area-input'
+            field.widget.attrs['class'] = 'form-control'
             field.help_text = ''
