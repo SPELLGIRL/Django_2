@@ -6,9 +6,10 @@
         {% csrf_token %}
         {{ registration_form.as_p }}
         <div class="input-form__submit-buttons">
-            <input class="background button input-form__button"
-                   type="submit"
-                   value="Register">
+            <button class="background button input-form__button"
+                    type="submit">
+                Register
+            </button>
             <button type="reset"
                     class="background button input-form__button">
                 Clear

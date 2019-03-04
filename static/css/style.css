@@ -13,6 +13,8 @@ html {
 
 body {
     font-family: "Montserrat", sans-serif;
+    line-height: 1;
+    font-size: 14px;
 }
 
 address {
@@ -52,6 +54,50 @@ p {
     letter-spacing: -.015em;
 }
 
+input, textarea, select {
+    min-width: 250px;
+    padding-left: 5px;
+}
+
+input[type=checkbox] {
+    width: 1.5em;
+    min-width: 1px;
+    padding-left: 0;
+    vertical-align: middle;
+    display: inline-block;
+
+}
+
+form > p, select {
+    margin-bottom: 5px;
+}
+
+textarea {
+    min-height: 100px;
+    resize: none;
+}
+
+/*button {*/
+/*margin-bottom: 10px;*/
+/*padding: 2px;*/
+/*}*/
+
+button:hover {
+    cursor: default;
+}
+
+button:focus {
+    outline: none;
+}
+
+button > a, button > a:hover {
+    display: block;
+    text-align: center;
+    height: 100%;
+    color: #212121;
+    text-decoration: none;
+}
+
 .background {
     background: center center no-repeat;
     background-size: cover;
@@ -65,6 +111,9 @@ p {
 .container {
     max-width: 1366px;
     margin: 0 auto;
+
+    padding-right: 0;
+    padding-left: 0;
 
     background-color: #fff;
 }
@@ -129,6 +178,7 @@ p {
 
 .menu__link:hover {
     color: #212121;
+    text-decoration: none;
 }
 
 .menu__link_active {
@@ -332,6 +382,9 @@ p {
 }
 
 .button {
+    min-width: 28px;
+    min-height: 28px;
+
     font-size: 18px;
     font-weight: 700;
 
@@ -360,8 +413,9 @@ p {
 }
 
 .button:hover {
-    color: black;
+    color: #212121;
     background-color: #e8e9eb;
+    text-decoration: none;
 }
 
 .button:active {
@@ -468,6 +522,8 @@ p {
 .explore-all:hover {
     -webkit-box-shadow: 0 0 0 1px black;
     box-shadow: 0 0 0 1px black;
+    color: #212121;
+    text-decoration: none;
 }
 
 .explore-all:active {
@@ -978,10 +1034,26 @@ p {
 .refresh:hover {
     border-radius: 35px;
     background-color: #e8e9eb;
+    text-decoration: none;
+    color: #212121;
 }
 
 .refresh:visited {
     color: #212121;
+}
+
+.product-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-pagination__button {
+    padding: 5px;
+    margin-top: 31px;
+    margin-bottom: 10px;
+    letter-spacing: 0;
+    justify-content: center;
 }
 
 .contacts-info {
@@ -1087,29 +1159,15 @@ p {
 }
 
 .input-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 260px;
     padding: 10px 10px;
+    box-sizing: content-box;
 
     -webkit-box-shadow: 0 0 0 1px #9c9c9c;
     box-shadow: 0 0 0 1px #9c9c9c;
-}
-
-.input-form__single-input, .input-form__area-input {
-    font-size: 15px;
-
-    min-width: 250px;
-    margin-bottom: 10px;
-    padding-left: 5px;
-}
-
-.input-form__area-input {
-    height: 100px;
-
-    resize: none;
-}
-
-.input-form__single-input {
-    height: 20px;
 }
 
 .input-form__button {
@@ -1118,15 +1176,17 @@ p {
     padding: 5px 10px;
     letter-spacing: 1px;
     outline: none;
+    width: 100%;
 }
 
 .input-form__submit-buttons {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-
-    -ms-flex-pack: distribute;
     justify-content: space-around;
+    width: 100%;
+    margin-top: 5px;
+    -ms-flex-pack: distribute;
 }
 
 .callback {
@@ -1352,7 +1412,7 @@ p {
 }
 
 .profile-form {
-    max-height: 500px;
+    /*max-height: 500px;*/
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -1365,9 +1425,10 @@ p {
     margin-top: 1px;
 }
 
-.profile-form > p > label, textarea {
+.profile-form > p > label textarea a {
     display: inline-block;
     vertical-align: middle;
+    margin-bottom: 0.5rem;
 }
 
 .user_avatar {

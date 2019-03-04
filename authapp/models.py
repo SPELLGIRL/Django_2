@@ -13,7 +13,7 @@ def image_path(instance, filename):
 class CustomUser(AbstractUser):
     avatar = models.ImageField(upload_to=image_path,
                                blank=True,
-                               default=''
+                               default='',
                                )
     age = models.PositiveIntegerField(verbose_name='возраст', default=18)
     activation_key = models.CharField(max_length=128, blank=True)

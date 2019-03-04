@@ -8,7 +8,9 @@
         <form action="{% url 'admin:category_delete' model.pk %}"
               method="post">
             {% csrf_token %}
-            <input type="submit" value="Delete">
+            <button type="submit" class="form-control">
+                Delete
+            </button>
         </form>
         <button>
             <a href="{% url 'admin:category_read' model.pk %}">Cancel</a>
