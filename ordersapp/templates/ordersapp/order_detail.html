@@ -4,24 +4,21 @@
 
 {% block content %}
     {% include 'ordersapp/include/inc_order_summary.html' %}
-    <div class="basket_list">
+    <div class="order-list">
         {% for item in object.orderitems.select_related %}
-            <div class="basket_record">
-                {% if item.small_img_path or object.big_img_path %}
+            <div class="order-list__row">
+                {% if item.product.small_img_path or item.product.big_img_path %}
                     <div class="background admin-product-image"
                          style="background-image: url(
-                                 {% if item.small_img_path %}
-                                     {{ item.small_img_path.url }}
+                                 {% if item.product.small_img_path %}
+                                     {{ item.product.small_img_path.url }}
                                  {% else %}
-                                     {{ item.big_img_path|media_folder_files }}
+                                     {{ item.product.big_img_path|media_folder_files }}
                                  {% endif %}
                                  )">
                     </div>
                 {% endif %}
-                <span class="category_name">
-                   {{ item.product.category.name }}
-               </span>
-                <span class="product_name">{{ item.product.name }}</span>
+                <span class="product_name">{{ item.product.title }}</span>
                 <span class="product_price">
                    {{ item.product.price|currency }}
                </span>

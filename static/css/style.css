@@ -135,6 +135,7 @@ button > a, button > a:hover {
     box-sizing: border-box;
     padding-right: 98px;
     padding-left: 98px;
+    padding-bottom: 5px;
 }
 
 .header {
@@ -1569,8 +1570,12 @@ button > a, button > a:hover {
     flex-direction: column;
     justify-content: space-evenly;
     margin-left: 25px;
-    width: 100px;
+    min-width: 100px;
     min-height: 125px;
+}
+
+.summary__right {
+    align-items: flex-end;
 }
 
 .product_record .product_desc {
@@ -1623,6 +1628,10 @@ button > a, button > a:hover {
     display: flex;
     justify-content: space-evenly;
     flex-basis: 14%;
+}
+
+.order-detail {
+    display: flex;
 }
 
 @media screen and (max-width: 1300px) {

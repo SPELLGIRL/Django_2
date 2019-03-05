@@ -6,7 +6,7 @@
         Уверены, что хотите удалить заказ
         {% include 'ordersapp/include/inc_order_summary.html' %}
         <form class="confirmation-page__form"
-              action="{% url 'orders:order_delete' object.pk %}"
+              action="{% url 'order:order_delete' object.pk %}"
               method="post">
             {% csrf_token %}
             <div class="input-form__submit-buttons">
