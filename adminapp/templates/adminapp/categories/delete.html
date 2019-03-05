@@ -3,17 +3,21 @@
 
 
 {% block content %}
-    <div>
-        Уверены, что хотите удалить {{ model.title|title }}?
+    <hr>
+    <div class="confirmation-page">
+        Уверены, что хотите удалить категорию <br>{{ model.name|title }}?
         <form action="{% url 'admin:category_delete' model.pk %}"
-              method="post">
+              method="post" class="confirmation-page__form">
             {% csrf_token %}
+            <br>
+            <div class="input-form__submit-buttons">
             <button type="submit" class="form-control">
                 Delete
             </button>
+            <button type="button" class="form-control">
+                <a href="{% url 'admin:category_read' model.pk %}">Cancel</a>
+            </button>
+                </div>
         </form>
-        <button>
-            <a href="{% url 'admin:category_read' model.pk %}">Cancel</a>
-        </button>
     </div>
 {% endblock %}

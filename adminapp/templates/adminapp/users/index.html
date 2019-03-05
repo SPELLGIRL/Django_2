@@ -1,34 +1,79 @@
 {% extends 'adminapp/base.html' %}
-
+{% load staticfiles %}
+{% load custom_tags %}
 {% block content %}
-    <hr>
 
-    <h1>Users list</h1>
-    <a href="{% url 'admin:user_create' %}">Create</a>
-    {% if page_obj.has_previous %}
-        <button>
-            <a href="{% url 'admin:users' %}/{{ page_obj.previous_page_number }}">Previous</a>
-        </button>
-    {% endif %}
-    {% if page_obj.has_next %}
-        <button>
-            <a href="{% url 'admin:users' %}/{{ page_obj.next_page_number }}">Next</a>
-        </button>
-    {% endif %}
-    <ul>
+    <hr>
+    <div class="categories_list">
+        <h1>Users list</h1>
+        <div class="admin-control">
+            <a href="{% url 'admin:user_create' %}"
+               class="button input-form__button admin-control__button">add new
+            </a>
+            {% if page_obj.has_previous %}
+                <button>
+                    <a href="{% url 'admin:users' %}/{{ page_obj.previous_page_number }}"
+                       class="button product-pagination__button"><i
+                            class="fas fa-angle-left"></i></a>
+                </button>
+            {% endif %}
+            {% if page_obj.has_next %}
+                <button>
+                    <a href="{% url 'admin:users' %}/{{ page_obj.next_page_number }}"
+                       class="button product-pagination__button"><i
+                            class="fas fa-angle-right"></i></a>
+                </button>
+            {% endif %}
+        </div>
         {% for user_profile in page_obj %}
-            <li class="menu__list">
-                <a href="{% url 'admin:user_read' pk=user_profile.id %}">
-                    <span class="
-                        {% if not user_profile.is_active %}
-                            not_is_active
-                        {% endif %}">
-                        {{ user_profile.username }}
-                    </span>
-                    ({{ user_profile.first_name|title }}
-                    {{ user_profile.last_name|title }})
-                </a>
-            </li>
+            <div class="category_record {% if not user_profile.is_active %}not_active{% endif %}">
+                <div class="background admin-product-image"
+                     style="background-image: url({{ user_profile.avatar|media_folder_files }})">
+                </div>
+                <div class="category_name">
+                    <p>{{ user_profile.username|title }}</p>
+                    <p>({{ user_profile.first_name|title }}
+                        {{ user_profile.last_name|title }})</p>
+                </div>
+                <div class="category_actions">
+                    <a href="{% url 'admin:user_read' pk=user_profile.id %}"
+                       class="button input-form__button admin-control__button">view</a>
+                </div>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 {% endblock %}
+
+
+
+
+
+
+
+{#    <hr>#}
+{##}
+{#    <h1>Users list</h1>#}
+{#    <ul class="admin-menu">#}
+{#        <li class="admin-menu__list">#}
+{#            <a href="{% url 'admin:user_create' %}"#}
+{#               class="button input-form__button">Create</a>#}
+{#        </li>#}
+{#    </ul>#}
+{#    <hr>#}
+{##}
+{#    <ul>#}
+{#        {% for user_profile in page_obj %}#}
+{#            <li class="menu__list">#}
+{#                <a href="{% url 'admin:user_read' pk=user_profile.id %}">#}
+{#                    <span class="#}
+{#                        {% if not user_profile.is_active %}#}
+{#                            not_active#}
+{#                        {% endif %}">#}
+{#                        {{ user_profile.username }}#}
+{#                    </span>#}
+{#                    ({{ user_profile.first_name|title }}#}
+{#                    {{ user_profile.last_name|title }})#}
+{#                </a>#}
+{#            </li>#}
+{#        {% endfor %}#}
+{#    </ul>#}

@@ -3,10 +3,9 @@
 {% load custom_tags %}
 {% block content %}
     <hr>
-    <div class="product_read">
-        <div class="product_name">
-            Продукт
-            <strong class="{% if not object.is_active %}not_is_active{% endif %}">
+    <div class="categories_list">
+        <div class="category_name">
+            <strong class="{% if not object.is_active %}not_active{% endif %}">
                 {{ object.title|title }}
             </strong>
         </div>
@@ -22,22 +21,33 @@
             </div>
         {% endif %}
         <div class="summary">
-            <p><b>Цена: </b>{{ object.price|currency }}</p>
-            <p><b>Количество: </b>{{ object.quantity }}</p>
-            <p><b>В каталоге: </b>{% if object.is_active %}да{% else %}
+            <b>Цена: </b>
+            <p>{{ object.price|currency }}</p>
+            <b>Количество: </b>
+            <p>{{ object.quantity }}</p>
+            <b>В каталоге: </b>
+            <p>{% if object.is_active %}да{% else %}
                 нет{% endif %}</p>
-            <a href="{% url 'admin:product_update' id=object.id %}">Update</a>
+        </div>
+        <div class="admin-control">
+            <a href="{% url 'admin:product_update' id=object.id %}"
+               class="button input-form__button admin-control__button">Update</a>
             {% if object.is_active %}
-                <a href="{% url 'admin:product_delete' id=object.id %}">Delete</a>
+                <a href="{% url 'admin:product_delete' id=object.id %}"
+                   class="button input-form__button admin-control__button">Delete</a>
             {% endif %}
+        </div>
+        <b>К категориям:</b>
+        <div class="admin-control">
             {% for category in categories %}
-                <p><a href="{% url 'admin:products' category.id %}">К товарам
-                    категории {{ category.name }}</a>
-                </p>
+                <a href="{% url 'admin:products' category.id %}"
+                   class="button input-form__button admin-control__button">
+                    {{ category.name }}</a>
+
             {% endfor %}
         </div>
         <hr>
-        <div class="product_desc">
+        <div class="category_desc">
             <b>Краткая информация:</b>
             <p>{{ object.description }}</p>
             <b>Подробная информация:</b>

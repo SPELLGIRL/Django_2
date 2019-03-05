@@ -2,16 +2,18 @@
 
 {% block content %}
     <hr>
-
-    <h1 class="{% if not model.is_active %}not_is_active{% endif %}">{{ model.name|title }}</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="form-control">
-            Save
-        </button>
-        <button type="button" class="form-control">
-            <a href="{% url 'admin:categories'%}">Cancel</a>
-        </button>
-    </form>
+    <div class="confirmation-page">
+        <form class="confirmation-page__form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="input-form__submit-buttons">
+                <button type="submit" class="form-control">
+                    Save
+                </button>
+                <button type="button" class="form-control">
+                    <a href="{% url 'admin:categories' %}">Cancel</a>
+                </button>
+            </div>
+        </form>
+    </div>
 {% endblock %}

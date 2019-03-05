@@ -3,27 +3,36 @@
 {% load custom_tags %}
 {% block content %}
     <hr>
-    <h1 class="{% if not object.is_active %}not_is_active{% endif %}">
-        login: {{ object.username }}
-    </h1>
-    <ul>
-        {% if object.first_name %}
-            <li class="menu__list">Имя: {{ object.first_name }}</li>
-        {% endif %}
-        {% if object.last_name %}
-            <li class="menu__list">Фамилия: {{ object.last_name }}</li>
-        {% endif %}
-        <li class="menu__list">E-mail: {{ object.email }}</li>
-        <li class="menu__list">Возраст: {{ object.age }}</li>
-    </ul>
-    {% if object.avatar %}
-        <div class="background products__item user_avatar"
-             style="background-image: url({{ object.avatar|media_folder_files }}">
+    <div class="categories_list">
+        <div class="category_name">
+            <h1 class="{% if not object.is_active %}not_active{% endif %}">
+                login: {{ object.username }}
+            </h1>
         </div>
-    {% endif %}
-    <a href="{% url 'admin:user_update' pk=object.id %}">Update</a>
-    {% if object.is_active %}
-        <a href="{% url 'admin:user_delete' pk=object.id %}">Delete</a>
-    {% endif %}
-    <p><a href="{% url 'admin:users' %}">Back</a></p>
+        <ul>
+            {% if object.first_name %}
+                <li class="menu__list">Имя: {{ object.first_name }}</li>
+            {% endif %}
+            {% if object.last_name %}
+                <li class="menu__list">Фамилия: {{ object.last_name }}</li>
+            {% endif %}
+            <li class="menu__list">E-mail: {{ object.email }}</li>
+            <li class="menu__list">Возраст: {{ object.age }}</li>
+        </ul>
+        {% if object.avatar %}
+            <div class="background products__item user_avatar"
+                 style="background-image: url({{ object.avatar|media_folder_files }}">
+            </div>
+        {% endif %}
+        <div class="admin-control">
+            <a href="{% url 'admin:user_update' pk=object.id %}"
+               class="button input-form__button admin-control__button">Update</a>
+            {% if object.is_active %}
+                <a href="{% url 'admin:user_delete' pk=object.id %}"
+                   class="button input-form__button admin-control__button">Delete</a>
+            {% endif %}
+            <a href="{% url 'admin:users' %}"
+               class="button input-form__button admin-control__button">Back</a>
+        </div>
+    </div>
 {% endblock %}

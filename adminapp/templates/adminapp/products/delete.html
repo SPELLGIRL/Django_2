@@ -3,16 +3,23 @@
 
 
 {% block content %}
-    <div class="product_delete">
-        Уверены, что хотите удалить продукт <strong>{{ product_to_delete.title }}</strong>?
-        <form action="{% url 'admin:product_delete' product_to_delete.pk %}" method="post">
+    <div class="confirmation-page">
+        Уверены, что хотите удалить продукт
+        <strong>{{ product_to_delete.title }}</strong>?
+        <form class="confirmation-page__form" action="{% url 'admin:product_delete' product_to_delete.pk %}"
+              method="post">
             {% csrf_token %}
-            <input class="btn btn-danger" type="submit" value="удалить">
+            <div class="input-form__submit-buttons">
+                <button class="form-control" type="submit">
+                    Удалить
+                </button>
+                <button class="form-control" type="button">
+                    <a href="{{ request.META.HTTP_REFERER }}">
+                        Отмена
+                    </a>
+                </button>
+            </div>
         </form>
-        <button class="btn btn-success">
-            <a href="{{ request.META.HTTP_REFERER }}">
-                отмена
-            </a>
-        </button>
-    </div>
+
+
 {% endblock %}

@@ -90,6 +90,9 @@ class Product(models.Model):
                                 max_digits=8,
                                 decimal_places=2)
 
+    quantity = models.PositiveIntegerField(verbose_name='Количество на складе',
+                                           default=0)
+
     is_active = models.BooleanField(default=True)
 
     def __str__(self):

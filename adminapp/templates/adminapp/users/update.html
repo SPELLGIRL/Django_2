@@ -3,28 +3,33 @@
 {% load custom_tags %}
 {% block content %}
     <hr>
-    <h1 class="{% if not object_list.is_active %}not_is_active{% endif %}">
-        {{ object_list.username|title }}
-    </h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="form-control">
-            Save
-        </button>
-        <button type="button" class="form-control">
-            <a href="
-                        {% if object_list %}
-                        {% url 'admin:user_read' object_list.pk %}
+    <div class="confirmation-page">
+        {% if object.avatar %}
+            <div class="background products__item user_avatar"
+                 style="background-image: url({{ object.avatar|media_folder_files }}">
+            </div>
+        {% endif %}
+        <h1 class="{% if not object.is_active %}not_active{% endif %}">
+            {{ object.username|title }}
+        </h1>
+        <form class="confirmation-page__form" method="post"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="input-form__submit-buttons">
+                <button type="submit" class="form-control">
+                    Save
+                </button>
+                <button type="button" class="form-control">
+                    <a href="
+                        {% if object %}
+                        {% url 'admin:user_read' object.pk %}
                         {% else %}
                         {% url 'admin:users' %}
                         {% endif %}">Cancel
-            </a>
-        </button>
-    </form>
-    {% if object_list.avatar %}
-        <div class="background products__item user_avatar"
-             style="background-image: url({{ user_profile.avatar|media_folder_files }}">
-        </div>
-    {% endif %}
+                    </a>
+                </button>
+            </div>
+        </form>
+    </div>
 {% endblock %}

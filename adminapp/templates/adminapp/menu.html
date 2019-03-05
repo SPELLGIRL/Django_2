@@ -1,11 +1,12 @@
-<ul class="">
+<ul class="menu">
     <li class="menu__list">
-        <a href="{% url 'mainapp:index' %}">Main</a>
+        <a href="{% url 'admin:categories' %}"
+           class="menu__link {% if 'product' in request.resolver_match.url_name or 'categor' in request.resolver_match.url_name %} menu__link_active
+    {% endif %}">Categories</a>
     </li>
     <li class="menu__list">
-        <a href="{% url 'admin:categories' %}">Categories</a>
-    </li>
-    <li class="menu__list">
-        <a href="{% url 'admin:users' %}">Users</a>
+        <a href="{% url 'admin:users' %}"
+           class="menu__link {% if 'user' in request.resolver_match.url_name %} menu__link_active
+    {% endif %}">Users</a>
     </li>
 </ul>

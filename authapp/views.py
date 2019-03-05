@@ -15,7 +15,7 @@ from .models import CustomUser
 def login(request: HttpRequest):
     title = 'Sign In'
 
-    login_form = LoginForm(data=request.POST)
+    login_form = LoginForm(data=request.POST or None)
     if request.method == 'POST' and login_form.is_valid():
         username = request.POST['username']
         password = request.POST['password']

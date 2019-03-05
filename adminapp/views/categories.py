@@ -41,7 +41,7 @@ def read(request: HttpRequest, id):
     context = {
         'title': 'Category',
         'model': model,
-        'products': model.products.all()[:20],
+        'products': model.products.all().order_by('is_active')[:5],
     }
 
     return render(request, 'adminapp/categories/read.html', context)
@@ -81,7 +81,7 @@ def delete(request: HttpRequest, id):
 
     context = {
         'title': 'Category delete',
-        'model': model
+        'model': model,
     }
 
     return render(request, 'adminapp/categories/delete.html', context)
