@@ -17,10 +17,28 @@
             {% endfor %}
             {% if user.is_authenticated %}
                 <li class="menu__list">
-                    <a href="{% url 'auth:edit' %}"
-                       class="menu__link {% if request.resolver_match.view_name == 'auth:edit' %} menu__link_active {% endif %}">
-                        My Profile ({{ user.first_name|default:'user' }})
-                    </a>
+
+
+                    <div class="dropdown">
+                        <a class="dropdown-toggle menu__link" href=""
+                           data-toggle="dropdown">
+                            {{ user.first_name|default:'User' }}
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{% url 'auth:edit' %}" class="menu__link {% if request.resolver_match.view_name == 'auth:edit' %} menu__link_active {% endif %}">
+                                    Profile ({{ user.first_name|default:'user' }})
+                                </a>
+                            </li>
+                            <li>
+{#                                <a href="{% url 'ordersapp:orders_list' %}">#}
+                                    <a href="#" class="menu__link">
+                                    Orders
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 {% if user.is_superuser %}
                     <li class="menu__list">
