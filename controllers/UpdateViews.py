@@ -21,3 +21,7 @@ class UserUpdateView(UpdateView):
     @method_decorator(user_passes_test(lambda user: user.is_superuser))
     def dispatch(self, request, *args, **kwargs):
         return super(UserUpdateView, self).dispatch(request, *args, **kwargs)
+
+
+class OrderItemsUpdate(UpdateView):
+    pass

@@ -18,3 +18,7 @@ class UserListView(ListView):
     @method_decorator(user_passes_test(lambda user: user.is_superuser))
     def dispatch(self, request, *args, **kwargs):
         return super(UserListView, self).dispatch(request, *args, **kwargs)
+
+
+class OrderList(ListView):
+    pass

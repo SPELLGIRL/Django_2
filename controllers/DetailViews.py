@@ -17,3 +17,7 @@ class UserDetailView(DetailView):
     @method_decorator(user_passes_test(lambda user: user.is_superuser))
     def dispatch(self, request, *args, **kwargs):
         return super(UserDetailView, self).dispatch(request, *args, **kwargs)
+
+
+class OrderRead(DetailView):
+    pass

@@ -27,3 +27,7 @@ class UserDeleteView(DeleteView):
     @method_decorator(user_passes_test(lambda user: user.is_superuser))
     def dispatch(self, request, *args, **kwargs):
         return super(UserDeleteView, self).dispatch(request, *args, **kwargs)
+
+
+class OrderDelete(DeleteView):
+    pass
