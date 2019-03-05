@@ -34,3 +34,9 @@ class UserDeleteView(DeleteView):
 class OrderDelete(DeleteView):
     model = Order
     success_url = reverse_lazy('ordersapp:orders_list')
+
+    def post(self, request, *args, **kwargs):
+        order = self.get_object()
+        order.is_active = False
+        order.save()
+        return HttpResponseRedirect(self.success_url)

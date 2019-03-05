@@ -1228,6 +1228,7 @@ button > a, button > a:hover {
     padding: 5px 10px;
     letter-spacing: 1px;
     outline: none;
+    justify-content: center;
 }
 
 .input-form__submit-buttons {
@@ -1528,7 +1529,7 @@ button > a, button > a:hover {
     align-self: center;
 }
 
-.categories_list a {
+.categories_list > a {
     display: flex;
     flex-direction: column;
 }
