@@ -1,7 +1,9 @@
 from django.views.generic.detail import DetailView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import user_passes_test
+
 from authapp.models import CustomUser
+from ordersapp.models import Order
 
 
 class UserDetailView(DetailView):
@@ -20,4 +22,9 @@ class UserDetailView(DetailView):
 
 
 class OrderRead(DetailView):
-    pass
+    model = Order
+
+    def get_context_data(self, **kwargs):
+        context = super(OrderRead, self).get_context_data(**kwargs)
+        context['title'] = 'заказ/просмотр'
+        return context

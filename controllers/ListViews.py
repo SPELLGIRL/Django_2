@@ -1,7 +1,9 @@
 from django.views.generic.list import ListView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import user_passes_test
+
 from authapp.models import CustomUser
+from ordersapp.models import Order
 
 
 class UserListView(ListView):
@@ -21,4 +23,7 @@ class UserListView(ListView):
 
 
 class OrderList(ListView):
-    pass
+    model = Order
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)

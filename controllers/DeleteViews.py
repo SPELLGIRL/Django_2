@@ -2,8 +2,10 @@ from django.views.generic.edit import DeleteView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import HttpResponseRedirect
-from authapp.models import CustomUser
 from django.urls import reverse_lazy
+
+from authapp.models import CustomUser
+from ordersapp.models import Order
 
 
 class UserDeleteView(DeleteView):
@@ -30,4 +32,5 @@ class UserDeleteView(DeleteView):
 
 
 class OrderDelete(DeleteView):
-    pass
+    model = Order
+    success_url = reverse_lazy('ordersapp:orders_list')

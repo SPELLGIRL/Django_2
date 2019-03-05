@@ -25,16 +25,18 @@
     <div class="top">
         <div class="content">
             <div class="container">
-                {% block menu %}
-                    <header class="background padding-content header header-admin">
-                        <a class="logo" href="{% url 'home:index' %}"><img
-                                src="{% static 'img/logo.svg' %}"
-                                alt="logo"></a>
-                        <nav>
-                            {% include 'adminapp/menu.html' %}
-                        </nav>
-                    </header>
-                {% endblock %}
+                <div class="background header-admin padding-content">
+                    {% block menu %}
+                        <header class="header">
+                            <a class="logo" href="{% url 'home:index' %}"><img
+                                    src="{% static 'img/logo.svg' %}"
+                                    alt="logo"></a>
+                            <nav>
+                                {% include 'adminapp/menu.html' %}
+                            </nav>
+                        </header>
+                    {% endblock %}
+                </div>
                 <div class="background padding-content admin-content">
                     {% block content %}
                     {% endblock %}

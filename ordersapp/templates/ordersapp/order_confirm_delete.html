@@ -1,22 +1,21 @@
-{% extends 'adminapp/base.html' %}
-{% load staticfiles %}
-
+{% extends 'ordersapp/base.html' %}
+{% load static %}
 
 {% block content %}
     <div class="confirmation-page">
-        Уверены, что хотите удалить продукт
-        <strong>{{ product_to_delete.title }}</strong>?
+        Уверены, что хотите удалить заказ
+        {% include 'ordersapp/include/inc_order_summary.html' %}
         <form class="confirmation-page__form"
-              action="{% url 'admin:product_delete' product_to_delete.pk %}"
+              action="{% url 'orders:order_delete' object.pk %}"
               method="post">
             {% csrf_token %}
             <div class="input-form__submit-buttons">
                 <button class="form-control" type="submit">
-                    Удалить
+                    Delete
                 </button>
                 <button class="form-control" type="button">
-                    <a href="{{ request.META.HTTP_REFERER }}">
-                        Отмена
+                    <a href="{% url 'order:orders_list' %}">
+                        Cancel
                     </a>
                 </button>
             </div>

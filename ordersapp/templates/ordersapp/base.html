@@ -27,11 +27,87 @@
     {% endblock %}
 </head>
 <body>
-<div class="order_container">
-    {% block content %}
-
-    {% endblock %}
-
+<div class="wrapper">
+    <div class="top">
+        <div class="content">
+            <div class="container">
+                <div class="background padding-content detail-header">
+                    {% include 'mainapp/widgets/header.html' %}
+                </div>
+                <div>
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="container">
+            <div class="background padding-content contacts">
+                <section class="contacts-middle">
+                    <div class="contact-us">
+                        <h4 class="contacts-h4">Contact Us</h4>
+                        <div class="contact-us-p-box">
+                            <p class="contact-us-p">132A Bridge Road Richmond
+                                VIC&nbsp;Australia.</p>
+                            <p class="contact-us-p">Talk to&nbsp;us on&nbsp;1300&nbsp;132
+                                info@interior.com</p>
+                        </div>
+                    </div>
+                    <div class="useful">
+                        <h4 class="contacts-h4">Useful Information</h4>
+                        <div class="useful-a-box">
+                            <div class="useful-link-box">
+                                <a href="#" class="useful-link">Sales terms</a>
+                                <a href="#" class="useful-link">Customer
+                                    care</a>
+                                <a href="#" class="useful-link">Delivery</a>
+                            </div>
+                            <div class="useful-link-box">
+                                <a href="#" class="useful-link">Architect
+                                    accounts</a>
+                                <a href="#" class="useful-link">Careers</a>
+                                <a href="#" class="useful-link">Exchanges &amp;&nbsp;returns</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subscribe">
+                        <h4 class="contacts-h4">Let&rsquo;s Stay
+                            in&nbsp;Touch!</h4>
+                        <p class="subscribe-p">Suscribe to&nbsp;know about our
+                            latest news, products and special
+                            offers just for suscribers.</p>
+                        <form class="email">
+                            <input type="email"
+                                   placeholder="your email address"
+                                   class="input-email">
+                            <button type="submit" class="button-send"></button>
+                        </form>
+                    </div>
+                </section>
+                <footer class="footer">
+                    <p class="copyright">&copy;&nbsp;Copyright&nbsp;&mdash;
+                        INTERIOR {% now "Y" %}. All Rights Reserved.</p>
+                    <div class="social-links">
+                        <a class="icon-link" href="#">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a class="icon-link" href="#">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a class="icon-link" href="#">
+                            <i class="fab fa-google-plus-g"></i>
+                        </a>
+                        <a class="icon-link" href="#">
+                            <i class="fab fa-pinterest-p"></i>
+                        </a>
+                    </div>
+                    <p class="copyright">Terms &amp;&nbsp;Conditions&nbsp;/
+                        Privacy policy &amp;&nbsp;Cookies</p>
+                </footer>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

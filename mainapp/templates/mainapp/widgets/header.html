@@ -20,20 +20,22 @@
 
 
                     <div class="dropdown">
-                        <a class="dropdown-toggle menu__link" href=""
+                        <a class="dropdown-toggle menu__link {% if request.resolver_match.view_name == 'order:orders_list' or request.resolver_match.view_name == 'auth:edit' %} menu__link_active {% endif %}" href=""
                            data-toggle="dropdown">
                             {{ user.first_name|default:'User' }}
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="{% url 'auth:edit' %}" class="menu__link {% if request.resolver_match.view_name == 'auth:edit' %} menu__link_active {% endif %}">
-                                    Profile ({{ user.first_name|default:'user' }})
+                                <a href="{% url 'auth:edit' %}"
+                                   class="menu__link">
+                                    Profile
+                                    ({{ user.first_name|default:'user' }})
                                 </a>
                             </li>
                             <li>
-{#                                <a href="{% url 'ordersapp:orders_list' %}">#}
-                                    <a href="#" class="menu__link">
+                                <a href="{% url 'order:orders_list' %}"
+                                   class="menu__link">
                                     Orders
                                 </a>
                             </li>
