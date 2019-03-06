@@ -1,14 +1,18 @@
 from django.views.generic.edit import UpdateView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import user_passes_test
-from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse, reverse_lazy
 from django.db import transaction
 
 from django.forms import inlineformset_factory
 from ordersapp.forms import OrderItemForm
 
 from authapp.models import CustomUser
+from mainapp.models import Category, Product
 from adminapp.models.users import UserEditForm
+from adminapp.models.categories import CategoryEditForm
+from adminapp.models.products import ProductEditForm
 from ordersapp.models import Order, OrderItem
 
 
@@ -20,7 +24,7 @@ class UserUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         parent_context = super(UserUpdateView, self).get_context_data(**kwargs)
-        parent_context['title'] = 'Update user'
+        parent_context['title'] = 'Edit user'
 
         return parent_context
 
@@ -29,7 +33,47 @@ class UserUpdateView(UpdateView):
         return super(UserUpdateView, self).dispatch(request, *args, **kwargs)
 
 
-class OrderItemsUpdate(UpdateView):
+class CategoryUpdateView(UpdateView):
+    model = Category
+    template_name = 'adminapp/categories/update.html'
+    success_url = reverse_lazy('admin:categories')
+    form_class = CategoryEditForm
+
+    def get_context_data(self, **kwargs):
+        parent_context = super(CategoryUpdateView, self).get_context_data(
+            **kwargs)
+        parent_context['title'] = 'Edit category'
+
+        return parent_context
+
+    @method_decorator(user_passes_test(lambda user: user.is_superuser))
+    def dispatch(self, request, *args, **kwargs):
+        return super(CategoryUpdateView, self).dispatch(request, *args,
+                                                        **kwargs)
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    template_name = 'adminapp/products/update.html'
+    form_class = ProductEditForm
+
+    def get_success_url(self):
+        return reverse('admin:product_update', args=[self.object.pk])
+
+    def get_context_data(self, **kwargs):
+        parent_context = super(ProductUpdateView, self).get_context_data(
+            **kwargs)
+        parent_context['title'] = 'Edit product'
+
+        return parent_context
+
+    @method_decorator(user_passes_test(lambda user: user.is_superuser))
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProductUpdateView, self).dispatch(request, *args,
+                                                       **kwargs)
+
+
+class OrderItemsUpdate(LoginRequiredMixin, UpdateView):
     model = Order
     fields = []
     success_url = reverse_lazy('ordersapp:orders_list')

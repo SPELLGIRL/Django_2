@@ -5,13 +5,13 @@
 {% block content %}
     <hr>
     <div class="confirmation-page">
-        {% if product.small_img_path or product.big_img_path %}
+        {% if object.small_img_path or object.big_img_path %}
             <div class="background products__item"
                  style="background-image: url(
-                         {% if product.small_img_path %}
-                             {{ product.small_img_path.url }}
+                         {% if object.small_img_path %}
+                             {{ object.small_img_path.url }}
                          {% else %}
-                             {{ product.big_img_path|media_folder_files }}
+                             {{ object.big_img_path|media_folder_files }}
                          {% endif %}
                          )">
             </div>
@@ -19,14 +19,14 @@
         <form class="confirmation-page__form" method="post"
               enctype="multipart/form-data">
             {% csrf_token %}
-            {{ update_form.as_p }}
+            {{ form.as_p }}
             <div class="input-form__submit-buttons">
                 <button class="form-control" type="submit">
                     Сохранить
                 </button>
-                {% if product %}
+                {% if object %}
                     <button class="form-control">
-                        <a href="{% url 'admin:product_read' product.id %}">
+                        <a href="{% url 'admin:product_read' object.pk %}">
                             Отмена
                         </a>
                     </button>

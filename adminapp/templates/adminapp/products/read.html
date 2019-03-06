@@ -30,10 +30,10 @@
                 нет{% endif %}</p>
         </div>
         <div class="admin-control">
-            <a href="{% url 'admin:product_update' id=object.id %}"
+            <a href="{% url 'admin:product_update' object.pk %}"
                class="button input-form__button admin-control__button">Update</a>
             {% if object.is_active %}
-                <a href="{% url 'admin:product_delete' id=object.id %}"
+                <a href="{% url 'admin:product_delete' object.pk %}"
                    class="button input-form__button admin-control__button">Delete</a>
             {% endif %}
         </div>

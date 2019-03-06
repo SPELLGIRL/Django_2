@@ -11,18 +11,17 @@
                class="button input-form__button admin-control__button">add new
             </a>
             {% if page_obj.has_previous %}
-                <button>
-                    <a href="{% url 'admin:users' %}/{{ page_obj.previous_page_number }}"
-                       class="button product-pagination__button"><i
-                            class="fas fa-angle-left"></i></a>
-                </button>
+                <a href="
+                        {% url 'admin:users' %}{{ page_obj.previous_page_number }}"
+                   class="button product-pagination__button"><i
+                        class="fas fa-angle-left"></i></a>
             {% endif %}
             {% if page_obj.has_next %}
-                <button>
-                    <a href="{% url 'admin:users' %}/{{ page_obj.next_page_number }}"
-                       class="button product-pagination__button"><i
-                            class="fas fa-angle-right"></i></a>
-                </button>
+                <a href="
+                        {% url 'admin:users' %}{{ page_obj.next_page_number }}"
+                   class="button product-pagination__button"><i
+                        class="fas fa-angle-right"></i></a>
+
             {% endif %}
         </div>
         {% for user_profile in page_obj %}

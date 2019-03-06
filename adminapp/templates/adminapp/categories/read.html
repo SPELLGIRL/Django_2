@@ -7,25 +7,25 @@
         <a href="{% url 'admin:categories' %}"
            class="button input-form__button admin-control__button">Back</a>
     </div>
-    <div class="category_record {% if not model.is_active %}not_active{% endif %}">
-        <h1 class="category_name {% if not model.is_active %}not_active{% endif %}">{{ model.name|title }}</h1>
+    <div class="category_record {% if not object.is_active %}not_active{% endif %}">
+        <h1 class="category_name {% if not object.is_active %}not_active{% endif %}">{{ object.name|title }}</h1>
         <div class="category_actions">
-            <a href="{% url 'admin:products' pk=model.id %}"
+            <a href="{% url 'admin:products' object.pk %}"
                class="button input-form__button admin-control__button">all
                 products</a>
-            <a href="{% url 'admin:category_update' id=model.id %}"
+            <a href="{% url 'admin:category_update' object.pk %}"
                class="button input-form__button admin-control__button">edit</a>
-            <a href="{% url 'admin:category_delete' id=model.id %}"
+            <a href="{% url 'admin:category_delete' object.pk %}"
                class="button input-form__button admin-control__button">delete</a>
         </div>
         <div class="category_desc">
-            {{ model.description|title }}
+            {{ object.description|title }}
         </div>
     </div>
     <hr>
     <h4>Products:</h4>
     <div class="admin-control">
-        <a href="{% url 'admin:product_create' model.pk %}"
+        <a href="{% url 'admin:product_create' object.pk %}"
            class="button input-form__button admin-control__button">add new
         </a>
     </div>
@@ -44,7 +44,7 @@
                 {{ object.title|title }}
             </div>
             <div class="category_actions">
-                <a href="{% url 'admin:product_read' id=object.id %}"
+                <a href="{% url 'admin:product_read' object.pk %}"
                    class="button input-form__button admin-control__button">View</a>
             </div>
             <div class="category_desc">

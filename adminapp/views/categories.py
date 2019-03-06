@@ -36,11 +36,11 @@ def create(request: HttpRequest):
 
 
 @user_passes_test(lambda user: user.is_superuser)
-def read(request: HttpRequest, id):
-    model = get_object_or_404(Category, pk=id)
+def read(request: HttpRequest, pk):
+    model = get_object_or_404(Category, pk=pk)
     context = {
         'title': 'Category',
-        'model': model,
+        'object': model,
         'products': model.products.all().order_by('is_active')[:5],
     }
 
@@ -48,8 +48,8 @@ def read(request: HttpRequest, id):
 
 
 @user_passes_test(lambda user: user.is_superuser)
-def update(request: HttpRequest, id):
-    model = get_object_or_404(Category, pk=id)
+def update(request: HttpRequest, pk):
+    model = get_object_or_404(Category, pk=pk)
 
     if request.method == 'POST':
         form = CategoryEditForm(request.POST, request.FILES, instance=model)
@@ -64,15 +64,15 @@ def update(request: HttpRequest, id):
     context = {
         'title': 'Category update',
         'form': form,
-        'model': model,
+        'object': model,
     }
 
     return render(request, 'adminapp/categories/update.html', context)
 
 
 @user_passes_test(lambda user: user.is_superuser)
-def delete(request: HttpRequest, id):
-    model = get_object_or_404(Category, pk=id)
+def delete(request: HttpRequest, pk):
+    model = get_object_or_404(Category, pk=pk)
 
     if request.method == 'POST':
         model.is_active = False
@@ -81,7 +81,7 @@ def delete(request: HttpRequest, id):
 
     context = {
         'title': 'Category delete',
-        'model': model,
+        'object': model,
     }
 
     return render(request, 'adminapp/categories/delete.html', context)

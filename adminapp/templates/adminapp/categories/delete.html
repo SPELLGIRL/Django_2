@@ -5,8 +5,8 @@
 {% block content %}
     <hr>
     <div class="confirmation-page">
-        Уверены, что хотите удалить категорию <br>{{ model.name|title }}?
-        <form action="{% url 'admin:category_delete' model.pk %}"
+        Уверены, что хотите удалить категорию <br>{{ object.name|title }}?
+        <form action="{% url 'admin:category_delete' object.pk %}"
               method="post" class="confirmation-page__form">
             {% csrf_token %}
             <br>
@@ -15,7 +15,7 @@
                 Delete
             </button>
             <button type="button" class="form-control">
-                <a href="{% url 'admin:category_read' model.pk %}">Cancel</a>
+                <a href="{% url 'admin:category_read' object.pk %}">Cancel</a>
             </button>
                 </div>
         </form>

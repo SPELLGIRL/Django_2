@@ -26,7 +26,7 @@ def create(request: HttpRequest, pk):
 
     content = {
         'title': title,
-        'update_form': product_form,
+        'form': product_form,
         'category': category
     }
 
@@ -34,13 +34,13 @@ def create(request: HttpRequest, pk):
 
 
 @user_passes_test(lambda user: user.is_superuser)
-def read(request: HttpRequest, id):
+def read(request: HttpRequest, pk):
     title = 'Product'
-    product = get_object_or_404(Product, pk=id)
+    product = get_object_or_404(Product, pk=pk)
     content = {
         'title': title,
         'object': product,
-        'categories': get_product_categories(id)
+        'categories': get_product_categories(pk)
     }
 
     return render(request, 'adminapp/products/read.html', content)
@@ -66,17 +66,17 @@ def list_by_category(request: HttpRequest, pk, page=1):
     content = {
         'title': title,
         'category': category,
-        'provider': products_provider,
+        'page_obj': products_provider,
     }
 
     return render(request, 'adminapp/products/index.html', content)
 
 
 @user_passes_test(lambda user: user.is_superuser)
-def update(request: HttpRequest, id):
+def update(request: HttpRequest, pk):
     title = 'продукт/редактирование'
 
-    edit_product = get_object_or_404(Product, pk=id)
+    edit_product = get_object_or_404(Product, pk=pk)
 
     if request.method == 'POST':
         edit_form = ProductEditForm(request.POST, request.FILES,
@@ -90,20 +90,20 @@ def update(request: HttpRequest, id):
 
     content = {
         'title': title,
-        'update_form': edit_form,
-        'product': edit_product
+        'form': edit_form,
+        'object': edit_product
     }
 
     return render(request, 'adminapp/products/update.html', content)
 
 
 @user_passes_test(lambda user: user.is_superuser)
-def delete(request: HttpRequest, id):
+def delete(request: HttpRequest, pk):
     title = 'продукт/удаление'
 
-    product = get_object_or_404(Product, pk=id)
+    product = get_object_or_404(Product, pk=pk)
 
-    categories = get_product_categories(id)
+    categories = get_product_categories(pk)
 
     if request.method == 'POST':
         product.is_active = False
@@ -113,7 +113,7 @@ def delete(request: HttpRequest, id):
 
     content = {
         'title': title,
-        'product_to_delete': product,
+        'object': product,
         'categories': categories
     }
 

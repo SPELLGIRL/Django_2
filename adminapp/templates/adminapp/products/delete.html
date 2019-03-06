@@ -5,9 +5,9 @@
 {% block content %}
     <div class="confirmation-page">
         Уверены, что хотите удалить продукт
-        <strong>{{ product_to_delete.title }}</strong>?
+        <strong>{{ object.title }}</strong>?
         <form class="confirmation-page__form"
-              action="{% url 'admin:product_delete' product_to_delete.pk %}"
+              action="{% url 'admin:product_delete' object.pk %}"
               method="post">
             {% csrf_token %}
             <div class="input-form__submit-buttons">
