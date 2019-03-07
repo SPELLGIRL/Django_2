@@ -1,7 +1,8 @@
 from django.views.generic.edit import UpdateView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse, reverse_lazy
 from django.db import transaction
 
@@ -73,10 +74,16 @@ class ProductUpdateView(UpdateView):
                                                        **kwargs)
 
 
-class OrderItemsUpdate(LoginRequiredMixin, UpdateView):
+class OrderItemsUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Order
     fields = []
     success_url = reverse_lazy('ordersapp:orders_list')
+
+    def test_func(self):
+        check = self.request.user == get_object_or_404(Order, id=self.kwargs[
+            'pk']).user or self.request.user.is_superuser
+
+        return check
 
     def get_context_data(self, **kwargs):
         data = super(OrderItemsUpdate, self).get_context_data(**kwargs)

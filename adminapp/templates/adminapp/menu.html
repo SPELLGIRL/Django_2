@@ -9,4 +9,9 @@
            class="menu__link {% if 'user' in request.resolver_match.url_name %} menu__link_active
     {% endif %}">Users</a>
     </li>
+    <li class="menu__list">
+        <a href="{% url 'admin:orders' %}"
+           class="menu__link {% if 'order' in request.resolver_match.url_name %} menu__link_active
+    {% endif %}">Orders</a>
+    </li>
 </ul>

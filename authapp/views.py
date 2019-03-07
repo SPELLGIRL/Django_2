@@ -16,6 +16,7 @@ def login(request: HttpRequest):
     title = 'Sign In'
 
     login_form = LoginForm(data=request.POST or None)
+
     if request.method == 'POST' and login_form.is_valid():
         username = request.POST['username']
         password = request.POST['password']
@@ -28,7 +29,7 @@ def login(request: HttpRequest):
 
     context = {
         'title': title,
-        'login_form': login_form
+        'login_form': login_form,
     }
     return render(request, 'authapp/login.html', context)
 
@@ -130,4 +131,4 @@ def verify(request: HttpRequest, email, activation_key):
             return render(request, 'authapp/verification.html', context)
     except Exception as e:
         print(f'error activation user : {e.args}')
-        return HttpResponseRedirect(reverse('home'))
+        return HttpResponseRedirect(reverse('home:index'))

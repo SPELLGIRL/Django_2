@@ -1,8 +1,8 @@
 {% extends 'adminapp/base.html' %}
-{% load staticfiles %}
+{% load static %}
 {% load custom_tags %}
-{% block content %}
 
+{% block content %}
     <hr>
     <div class="categories_list">
         <h1>Users list</h1>
@@ -42,37 +42,3 @@
         {% endfor %}
     </div>
 {% endblock %}
-
-
-
-
-
-
-
-{#    <hr>#}
-{##}
-{#    <h1>Users list</h1>#}
-{#    <ul class="admin-menu">#}
-{#        <li class="admin-menu__list">#}
-{#            <a href="{% url 'admin:user_create' %}"#}
-{#               class="button input-form__button">Create</a>#}
-{#        </li>#}
-{#    </ul>#}
-{#    <hr>#}
-{##}
-{#    <ul>#}
-{#        {% for user_profile in page_obj %}#}
-{#            <li class="menu__list">#}
-{#                <a href="{% url 'admin:user_read' pk=user_profile.id %}">#}
-{#                    <span class="#}
-{#                        {% if not user_profile.is_active %}#}
-{#                            not_active#}
-{#                        {% endif %}">#}
-{#                        {{ user_profile.username }}#}
-{#                    </span>#}
-{#                    ({{ user_profile.first_name|title }}#}
-{#                    {{ user_profile.last_name|title }})#}
-{#                </a>#}
-{#            </li>#}
-{#        {% endfor %}#}
-{#    </ul>#}

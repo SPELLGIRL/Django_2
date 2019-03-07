@@ -13,6 +13,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def delete(self, *args, **kwargs):
+        self.is_active = False
+        self.save()
+
 
 class MainMenu(models.Model):
     title = models.CharField(max_length=20, verbose_name='Заголовок')
@@ -97,3 +101,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+    def delete(self, *args, **kwargs):
+        self.is_active = False
+        self.save()

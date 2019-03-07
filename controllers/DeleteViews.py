@@ -1,7 +1,8 @@
 from django.views.generic.edit import DeleteView
 from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test
-from django.shortcuts import HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 
 from authapp.models import CustomUser
@@ -20,13 +21,6 @@ class UserDeleteView(DeleteView):
 
         return parent_context
 
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.is_active = False
-        self.object.save()
-
-        return HttpResponseRedirect(self.get_success_url())
-
     @method_decorator(user_passes_test(lambda user: user.is_superuser))
     def dispatch(self, request, *args, **kwargs):
         return super(UserDeleteView, self).dispatch(request, *args, **kwargs)
@@ -43,13 +37,6 @@ class CategoryDeleteView(DeleteView):
         parent_context['title'] = 'Delete category'
 
         return parent_context
-
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.is_active = False
-        self.object.save()
-
-        return HttpResponseRedirect(self.get_success_url())
 
     @method_decorator(user_passes_test(lambda user: user.is_superuser))
     def dispatch(self, request, *args, **kwargs):
@@ -72,25 +59,28 @@ class ProductDeleteView(DeleteView):
 
         return parent_context
 
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.is_active = False
-        self.object.save()
-
-        return HttpResponseRedirect(self.get_success_url())
-
     @method_decorator(user_passes_test(lambda user: user.is_superuser))
     def dispatch(self, request, *args, **kwargs):
         return super(ProductDeleteView, self).dispatch(request, *args,
                                                        **kwargs)
 
 
-class OrderDelete(DeleteView):
+class OrderDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Order
     success_url = reverse_lazy('ordersapp:orders_list')
 
-    def post(self, request, *args, **kwargs):
-        order = self.get_object()
-        order.is_active = False
-        order.save()
-        return HttpResponseRedirect(self.success_url)
+    def test_func(self):
+        check = self.request.user == get_object_or_404(Order, id=self.kwargs[
+            'pk']).user or self.request.user.is_superuser
+
+        return check
+
+    def is_active(self):
+        return get_object_or_404(Order, id=self.kwargs['pk']).is_active
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.is_active():
+            return super(OrderDelete, self).dispatch(request, *args,
+                                                     **kwargs)
+        else:
+            return HttpResponseRedirect(reverse('home:index'))

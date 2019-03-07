@@ -17,8 +17,6 @@
             {% endfor %}
             {% if user.is_authenticated %}
                 <li class="menu__list">
-
-
                     <div class="dropdown">
                         <a class="dropdown-toggle menu__link {% if request.resolver_match.view_name == 'order:orders_list' or request.resolver_match.view_name == 'auth:edit' %} menu__link_active {% endif %}" href=""
                            data-toggle="dropdown">
@@ -63,8 +61,6 @@
                                           class="menu__link {% if request.resolver_match.view_name == 'auth:login' %} menu__link_active {% endif %}">sign
                     in</a></li>
             {% endif %}
-
-
             <li class="menu__list search"><img
                     src="{% static 'img/search.svg' %}" alt="search"></li>
             <li class="menu__list search">

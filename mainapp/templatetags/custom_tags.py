@@ -17,7 +17,7 @@ def currency(string):
     return f'${string}'
 
 
-@register.filter(name='is_active_list')
-def is_active_list(object_list):
-    object_list = object_list.filter(is_active='True')
-    return object_list
+# @register.filter(name='is_active_list')
+# def is_active_list(object_list):
+#     object_list = object_list.filter(is_active='True')
+#     return object_list

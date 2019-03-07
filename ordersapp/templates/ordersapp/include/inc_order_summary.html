@@ -14,7 +14,7 @@
             <b>Общая стоимость:</b>
         </div>
         <div class="summary">
-            <p>{{ user.last_name|default:"User" }} {{ user.first_name }}</p>
+            <p>{{ object.user.last_name|default:"User" }} {{ object.user.first_name }}</p>
             <p>{{ object.updated|date:"Y-m-d H:i:s" }}</p>
             <p>{{ object.get_status_display }}</p>
             <p>{{ object.get_total_quantity }}</p>

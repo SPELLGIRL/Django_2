@@ -1,4 +1,4 @@
-{% extends 'ordersapp/base.html' %}
+{% extends 'adminapp/base.html' %}
 {% load static %}
 {% load custom_tags %}
 
@@ -10,13 +10,19 @@
                class="button input-form__button admin-control__button">
                 Новый заказ
             </a>
-        </div>
-        <div class="h2 text-center head">
-            Ваши заказы,
-            {% if user.first_name %}
-                {{ user.first_name|title }}
-            {% else %}
-                User
+            {% if page_obj.has_previous %}
+                <a href="
+
+                    {% url 'admin:orders' %}{{ page_obj.previous_page_number }}"
+                   class="button product-pagination__button"><i
+                        class="fas fa-angle-left"></i></a>
+            {% endif %}
+            {% if page_obj.has_next %}
+                <a href="
+                        {% url 'admin:orders' %}{{ page_obj.next_page_number }}"
+                   class="button product-pagination__button"><i
+                        class="fas fa-angle-right"></i></a>
+
             {% endif %}
         </div>
         <div class="order-list">
@@ -37,7 +43,7 @@
                 </div>
             {% endif %}
             {% for item in page_obj %}
-                <div class="order-list__row">
+                <div class="order-list__row {% if not item.is_active %}not_active{% endif %}">
                     <div class="order-list__col order-list__col-id">{{ item.pk }}</div>
                     <div class="order-list__col order-list__col-created">{{ item.created|date:"Y-m-d H:i:s" }}</div>
                     <div class="order-list__col order-list__col-updated">{{ item.updated|date:"Y-m-d H:i:s" }}</div>
@@ -49,18 +55,21 @@
                         </a>
                     </div>
                     <div class="order-list__col order-list__col-actions">
-                        {% if item.status == 'FM' %}
                             <a href="{% url 'order:order_update' item.pk %}"
                                class="button input-form__button">
                                 редактировать
                             </a>
-                        {% endif %}
                     </div>
                     <div class="order-list__col order-list__col-actions">
-                        {% if item.status == 'FM' %}
+                        {% if item.is_active %}
                             <a href="{% url 'order:order_delete' item.pk %}"
                                class="button input-form__button">
                                 удалить
+                            </a>
+                        {% else %}
+                            <a href="{% url 'admin:order_restore' item.pk %}"
+                               class="button input-form__button">
+                                восстановить
                             </a>
                         {% endif %}
                     </div>

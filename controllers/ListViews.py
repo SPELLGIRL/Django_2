@@ -2,6 +2,8 @@ from django.views.generic.list import ListView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import HttpResponseRedirect
+from django.urls import reverse
 from django.shortcuts import get_object_or_404
 
 from authapp.models import CustomUser
@@ -67,6 +69,19 @@ class ProductListView(ListView):
 
 class OrderList(LoginRequiredMixin, ListView):
     model = Order
+    paginate_by = 10
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user)
+        query_set = Order.objects.filter(user=self.request.user,
+                                         is_active=True)
+
+        return query_set
+
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.resolver_match.namespace == 'admin':
+            if self.request.user.is_superuser:
+                self.template_name = 'adminapp/orders/index.html'
+                self.query_set = Order.objects.all().order_by('-is_active')
+            else:
+                return HttpResponseRedirect(reverse('auth:index'))
+        return super().render_to_response(context, **response_kwargs)
