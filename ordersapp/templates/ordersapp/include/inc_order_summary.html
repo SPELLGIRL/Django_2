@@ -1,0 +1,45 @@
+{% load custom_tags %}
+
+{% if object %}
+
+    <div class="h2">Заказ №{{ object.pk }}
+        от {{ object.created|date:"Y-m-d H:i:s" }}</div>
+    <hr>
+    <div class="order-detail">
+        <div class="summary summary__right">
+            <b>Заказчик:</b>
+            <b>Обновлен:</b>
+            <b>Статус:</b>
+            <b>Общее количество товаров:</b>
+            <b>Общая стоимость:</b>
+        </div>
+        <div class="summary">
+            <p>{{ object.user.last_name|default:"User" }} {{ object.user.first_name }}</p>
+            <p>{{ object.updated|date:"Y-m-d H:i:s" }}</p>
+            <p>{{ object.get_status_display }}</p>
+            <p>{{ object.get_total_quantity }}</p>
+            <p>{{ object.get_total_cost|currency }}</p>
+        </div>
+    </div>
+{% else %}
+    <div class="h2">Новый заказ</div>
+    <hr>
+
+    <div class="order-detail">
+        <div class="summary summary__right">
+            <b>Заказчик:</b>
+            {% if basket.0 %}
+                <b>Общее количество товаров:</b>
+                <b>Общая стоимость:</b>
+            {% endif %}
+        </div>
+        <div class="summary">
+            <p>{{ user.last_name|default:"User" }} {{ user.first_name }}</p>
+            {% if basket.0 %}
+                <p>{{ basket.0.total_quantity }}</p>
+                <p>{{ basket.0.total_cost|currency }}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+<hr>   

@@ -8,14 +8,26 @@
             <a href="{% url 'admin:category_create' %}"
                class="button input-form__button admin-control__button">add new
             </a>
+            {% if page_obj.has_previous %}
+                <a href="
+                        {% url 'admin:categories' %}{{ page_obj.previous_page_number }}"
+                   class="button product-pagination__button"><i
+                        class="fas fa-angle-left"></i></a>
+            {% endif %}
+            {% if page_obj.has_next %}
+                <a href="
+                        {% url 'admin:categories' %}{{ page_obj.next_page_number }}"
+                   class="button product-pagination__button"><i
+                        class="fas fa-angle-right"></i></a>
+            {% endif %}
         </div>
-        {% for model in models %}
+        {% for model in page_obj %}
             <div class="category_record {% if not model.is_active %}not_active{% endif %}">
                 <div class="category_name">
                     {{ model.name|title }}
                 </div>
                 <div class="category_actions">
-                    <a href="{% url 'admin:category_read' id=model.id%}"
+                    <a href="{% url 'admin:category_read' pk=model.id %}"
                        class="button input-form__button admin-control__button">view</a>
                 </div>
                 <div class="category_desc">

@@ -17,10 +17,28 @@
             {% endfor %}
             {% if user.is_authenticated %}
                 <li class="menu__list">
-                    <a href="{% url 'auth:edit' %}"
-                       class="menu__link {% if request.resolver_match.view_name == 'auth:edit' %} menu__link_active {% endif %}">
-                        My Profile ({{ user.first_name|default:'user' }})
-                    </a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle menu__link {% if request.resolver_match.view_name == 'order:orders_list' or request.resolver_match.view_name == 'auth:edit' %} menu__link_active {% endif %}" href=""
+                           data-toggle="dropdown">
+                            {{ user.first_name|default:'User' }}
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{% url 'auth:edit' %}"
+                                   class="menu__link">
+                                    Profile
+                                    ({{ user.first_name|default:'user' }})
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'order:orders_list' %}"
+                                   class="menu__link">
+                                    Orders
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 {% if user.is_superuser %}
                     <li class="menu__list">
@@ -43,8 +61,6 @@
                                           class="menu__link {% if request.resolver_match.view_name == 'auth:login' %} menu__link_active {% endif %}">sign
                     in</a></li>
             {% endif %}
-
-
             <li class="menu__list search"><img
                     src="{% static 'img/search.svg' %}" alt="search"></li>
             <li class="menu__list search">

@@ -10,22 +10,21 @@
             <a href="{% url 'admin:product_create' category.pk %}"
                class="button input-form__button admin-control__button">new
                 product</a>
-            {% if provider.has_previous %}
+            {% if page_obj.has_previous %}
                 <a href="
-                        {% url 'admin:products' category.pk %}{{ provider.previous_page_number }}"
+                        {% url 'admin:products' category.pk %}{{ page_obj.previous_page_number }}"
                    class="button product-pagination__button"><i
                         class="fas fa-angle-left"></i></a>
             {% endif %}
-            {% if provider.has_next %}
+            {% if page_obj.has_next %}
                 <a href="
-                        {% url 'admin:products' category.pk %}{{ provider.next_page_number }}"
+                        {% url 'admin:products' category.pk %}{{ page_obj.next_page_number }}"
                    class="button product-pagination__button"><i
                         class="fas fa-angle-right"></i></a>
             {% endif %}
         </div>
-        {% for object in provider %}
+        {% for object in page_obj %}
             <div class="category_record">
-                {% if object.small_img_path or object.big_img_path %}
                     <div class="background admin-product-image"
                          style="background-image: url(
                                  {% if object.small_img_path %}
@@ -35,7 +34,6 @@
                                  {% endif %}
                                  )">
                     </div>
-                {% endif %}
                 <div class="category_name {% if not object.is_active %}not_active{% endif %}">
                     <b>{{ object.title|title }}</b>
                 </div>

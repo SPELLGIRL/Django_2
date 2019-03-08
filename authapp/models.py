@@ -26,6 +26,10 @@ class CustomUser(AbstractUser):
         else:
             return True
 
+    def delete(self, *args, **kwargs):
+        self.is_active = False
+        self.save()
+
 
 class CustomUserProfile(models.Model):
     MALE = 'M'

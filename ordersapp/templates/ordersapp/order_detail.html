@@ -1,0 +1,41 @@
+{% extends "ordersapp/base.html" %}
+{% load static %}
+{% load custom_tags %}
+
+{% block content %}
+    {% include 'ordersapp/include/inc_order_summary.html' %}
+    <div class="order-list">
+        {% for item in object.orderitems.select_related %}
+            <div class="order-list__row">
+                {% if item.product.small_img_path or item.product.big_img_path %}
+                    <div class="background admin-product-image"
+                         style="background-image: url(
+                                 {% if item.product.small_img_path %}
+                                     {{ item.product.small_img_path.url }}
+                                 {% else %}
+                                     {{ item.product.big_img_path|media_folder_files }}
+                                 {% endif %}
+                                 )">
+                    </div>
+                {% endif %}
+                <span class="product_name">{{ item.product.title }}</span>
+                <span class="product_price">
+                   {{ item.product.price|currency }}
+               </span>
+                <span class="product_quantitiy">
+                   x {{ item.quantity }} шт.
+               </span>
+                <span class="product_cost">
+                    = {{ item.get_product_cost|currency }}
+               </span>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="input-form__submit-buttons">
+        <a href="{% url 'order:order_update' object.pk %}"
+           class="button input-form__button">
+            редактировать
+        </a>
+        {% include 'ordersapp/include/inc_order_actions.html' %}
+    </div>
+{% endblock %}

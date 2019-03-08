@@ -1,8 +1,7 @@
 {% extends 'authapp/base.html' %}
 {% load static %}
 {% block content %}
-    <form class="profile-form" action="{% url 'auth:login' %}"
-          method="post">
+    <form class="profile-form" action="{% url 'auth:login' %}" method="post">
         {% csrf_token %}
         {% if request.GET.next %}
             <input type="hidden" name="next" value="{{ request.GET.next }}">
@@ -17,7 +16,8 @@
                     class="background button input-form__button">
                 Clear
             </button>
-            <a href="{% url 'social:begin' 'vk-oauth2' %}?next=/"
+            <a href="
+                    {% url 'social:begin' 'vk-oauth2' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}/{% endif %}"
                class="background button social-login-link"
                style="background-image: url({% static 'img/vk-logo.svg' %})">
             </a>

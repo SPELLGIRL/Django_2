@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-{% load static %}
-<html lang="en">
+{% load staticfiles %}
+<html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>
         {% block title %}
-            {{ title|capfirst }}
+            {{ title|title }}
         {% endblock %}
     </title>
     {% block css %}
@@ -23,6 +23,7 @@
         <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
         <script src="{% static 'js/popper.min.js' %}"></script>
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/orders_scripts.js' %}"></script>
     {% endblock %}
 </head>
 <body>
@@ -33,7 +34,7 @@
                 <div class="background padding-content detail-header">
                     {% include 'mainapp/widgets/header.html' %}
                 </div>
-                <div class="profile">
+                <div class="background padding-content">
                     {% block content %}
                     {% endblock %}
                 </div>
@@ -108,6 +109,5 @@
         </div>
     </div>
 </div>
-
 </body>
 </html>

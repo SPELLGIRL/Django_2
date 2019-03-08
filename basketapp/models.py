@@ -12,6 +12,10 @@ class Basket(models.Model):
     add_datetime = models.DateTimeField(verbose_name='время',
                                         auto_now_add=True)
 
+    def get_items(user):
+        return Basket.objects.filter(user=user).order_by(
+            'product__category')
+
     @property
     def cost(self):
         return self.product.price * self.quantity
