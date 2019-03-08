@@ -6,7 +6,7 @@ from django.urls import path
 app_name = "ordersapp"
 
 urlpatterns = [
-    path('', ListViews.OrderList.as_view(), name='orders_list'),
+    path('', ListViews.OrderListView.as_view(), name='orders_list'),
     path('forming/complete/<int:pk>/',
          ordersapp.order_forming_complete, name='order_forming_complete'),
     path('create/', CreateViews.OrderItemsCreate.as_view(),

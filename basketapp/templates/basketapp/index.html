@@ -15,7 +15,7 @@
                     шт)</p><br>
             </div>
             <ul>
-                {% for item in basket %}
+                {% for item in page_obj %}
                     <li class="basket-item basket-item-{{ item.product_id }}">
                         {% if forloop.counter <= 12 %}
                             <p>

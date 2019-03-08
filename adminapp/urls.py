@@ -87,9 +87,9 @@ urlpatterns = [
     # orders
     path('order/restore/<int:page>/', UpdateViews.OrderItemsUpdate.as_view(),
          name='order_restore'),
-    path('orders/list/', ListViews.OrderList.as_view(),
+    path('orders/list/', ListViews.OrderListView.as_view(),
          name='orders'),
-    path('orders/list/<int:page>/', ListViews.OrderList.as_view(),
+    path('orders/list/<int:page>/', ListViews.OrderListView.as_view(),
          name='orders_page'),
 
 ]

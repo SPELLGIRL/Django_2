@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 
 from authapp.models import CustomUser
 from mainapp.models import Category, Product
+from basketapp.models import Basket
 from ordersapp.models import Order
 
 
@@ -67,7 +68,7 @@ class ProductListView(ListView):
         return super(ProductListView, self).dispatch(request, *args, **kwargs)
 
 
-class OrderList(LoginRequiredMixin, ListView):
+class OrderListView(LoginRequiredMixin, ListView):
     model = Order
     paginate_by = 10
 
@@ -85,3 +86,16 @@ class OrderList(LoginRequiredMixin, ListView):
             else:
                 return HttpResponseRedirect(reverse('auth:index'))
         return super().render_to_response(context, **response_kwargs)
+
+
+class BasketListView(LoginRequiredMixin, ListView):
+    model = Basket
+    template_name = 'basketapp/index.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Basket.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        parent_context = super(BasketListView, self).get_context_data(**kwargs)
+        parent_context['title'] = 'Cart'
