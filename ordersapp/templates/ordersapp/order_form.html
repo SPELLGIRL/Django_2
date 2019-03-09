@@ -1,5 +1,6 @@
 {% extends "ordersapp/base.html" %}
 {% load static %}
+{% load custom_tags %}
 
 {% block content %}
     {% include 'ordersapp/include/inc_order_summary.html' %}
@@ -30,7 +31,15 @@
                                     {% endfor %}
                                 {% endif %}
                                 {{ field.errors.as_ul }}
-                                {{ field }}
+                                {% if field.name != 'price' %}
+                                    {{ field }}
+                                {% else %}
+                                    {% if field.value %}
+                                        <span class="orderitems-{{ forloop.parentloop.counter0 }}-price">
+                                            {{ field.value|currency }}
+                                        </span>
+                                    {% endif %}
+                                {% endif %}
                             </td>
                         {% endfor %}
                     </tr>

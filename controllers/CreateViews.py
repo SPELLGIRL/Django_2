@@ -100,6 +100,7 @@ class OrderItemsCreate(LoginRequiredMixin, CreateView):
                 for num, form in enumerate(formset.forms):
                     form.initial['product'] = basket_items[num].product
                     form.initial['quantity'] = basket_items[num].quantity
+                    form.initial['price'] = f'{basket_items[num].product.price} * {basket_items[num].product.quantity} = ${basket_items[num].product.cost}'
             else:
                 formset = orderformset()
 

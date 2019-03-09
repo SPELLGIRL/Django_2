@@ -29,7 +29,7 @@ def basket_change(request: HttpRequest, pk: int):
 
     if request.is_ajax():
         if request.method == "POST":
-            basket_product.quantity = request.POST['change_quantity']
+            basket_product.quantity = int(request.POST['change_quantity'])
             basket_product.save()
         return JsonResponse({
             'quantity': basket_product.quantity,
