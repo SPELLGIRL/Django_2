@@ -211,7 +211,6 @@ td {
 }
 
 
-
 .menu__link {
     font-size: 14px;
     font-weight: 300;
@@ -1246,7 +1245,6 @@ td {
     justify-content: space-around;
     width: 100%;
     margin-top: 5px;
-    -ms-flex-pack: distribute;
 }
 
 .confirmation-page__form {
@@ -1263,7 +1261,6 @@ td {
 
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    -ms-flex-pack: distribute;
     justify-content: space-around;
     -webkit-box-align: end;
     -ms-flex-align: end;
@@ -1709,12 +1706,13 @@ td {
     text-decoration: none;
 }
 
-.delete-row:active, .add-row:hover{
+.delete-row:active, .add-row:hover {
     position: relative;
     top: 2px;
 
     -webkit-box-shadow: 0 0 5px 1px rgba(33, 33, 33, .35);
     box-shadow: 0 0 5px 1px rgba(33, 33, 33, .35);
+}
 
 @media screen and (max-width: 1300px) {
     .padding-products-block {
@@ -1723,7 +1721,6 @@ td {
     }
 
     .products-heading {
-        -ms-flex-pack: distribute;
         justify-content: space-around;
     }
 
