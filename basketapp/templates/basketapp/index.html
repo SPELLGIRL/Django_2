@@ -4,11 +4,18 @@
 {% block content %}
     <h4 class="basket-item-none" {% if basket %}hidden{% endif %}>Товаров
         пока нет</h4>
+    <div class="admin-control">
+            <a href="{% url 'ordersapp:order_create' %}"
+               class="button input-form__button admin-control__button">
+                Оформить
+            </a>
+        </div>
     <div class="basket-products">
+
         {% if basket %}
             <div class="basket-total-counters">
                 <p>Итого: $<span
-                        class="basket-item-total-cost">{{ basket.0.total_cost }}</span>
+                        class="basket-item-total-cost">{{ basket.0.total_cost|normalize }}</span>
                 </p>
                 <p>Общее количество: <span
                         class="basket-item-total-quantity">{{ basket.0.total_quantity }}</span>
@@ -25,10 +32,10 @@
                         <p>
                             Стоимость:
                             $<span
-                                class="basket-item-price">{{ item.product.price }}</span>
+                                class="basket-item-price">{{ item.product.price|normalize }}</span>
                             (Общая:
                             $<span
-                                class="basket-item-cost">{{ item.cost }}</span>)
+                                class="basket-item-cost">{{ item.cost|normalize }}</span>)
                         </p>
                         <p class="basket-item-form">
                             Количество:

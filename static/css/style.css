@@ -1500,6 +1500,7 @@ button > a, button > a:hover {
 .basket-products {
     display: flex;
     flex-direction: column;
+    align-self: center;
 }
 
 .basket {
@@ -1525,11 +1526,13 @@ button > a, button > a:hover {
 }
 
 .basket-items {
-display: flex;
-    padding: 20px 10px 10px;
-    margin: 0 auto;
+    display: flex;
+    padding-top: 10px;
+    /*padding: 20px 10px 10px;*/
+    /*margin: 0 auto;*/
+    flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .basket-item {

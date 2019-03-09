@@ -68,7 +68,7 @@
                     <span class="basket-info">
                         {% if basket %}
                             <p><span class="basket-item-total-quantity">{{ basket.0.total_quantity }}</span> товаров</p>
-                            <p>$<span class="basket-item-total-cost">{{ basket.0.total_cost}}</span></p>
+                            <p>$<span class="basket-item-total-cost">{{ basket.0.total_cost|normalize}}</span></p>
                         {% endif %}
                     </span>
                 </a>
