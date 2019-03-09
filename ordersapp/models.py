@@ -51,17 +51,26 @@ class Order(models.Model):
         return sum(list(map(lambda x: x.quantity * x.product.price, items)))
 
     def delete(self, *args, **kwargs):
-        if self.is_active:
-            for item in self.orderitems.select_related():
-                item.product.quantity += item.quantity
-                item.product.save()
+        for item in self.orderitems.select_related():
+            item.product.quantity += item.quantity
+            item.product.save()
 
-                self.is_active = False
-                self.status = Order.CANCEL
-                self.save()
+        self.is_active = False
+        self.save()
+
+
+# class OrderItemQuerySet(models.QuerySet):
+#
+#     def delete(self, *args, **kwargs):
+#         for item in self:
+#             item.product.quantity += item.quantity
+#             item.product.save()
+#         super(OrderItemQuerySet, self).delete(*args, **kwargs)
 
 
 class OrderItem(models.Model):
+    # objects = OrderItemQuerySet.as_manager()
+
     order = models.ForeignKey(Order,
                               related_name="orderitems",
                               on_delete=models.CASCADE)
@@ -73,3 +82,20 @@ class OrderItem(models.Model):
 
     def get_product_cost(self):
         return self.product.price * self.quantity
+
+    def get_item(pk):
+        return OrderItem.objects.filter(pk=pk).first()
+
+    # def save(self, *args, **kwargs):
+    #     if self.pk:
+    #         self.product.quantity -= self.quantity - self.__class__.get_items(
+    #             self.pk).quantity
+    #     else:
+    #         self.product.quantity -= self.quantity
+    #     self.product.save()
+    #     super(self.__class__, self).save(*args, **kwargs)
+
+    # def delete(self, *args, **kwargs):
+    #     self.product.quantity += self.quantity
+    #     self.product.save()
+    #     super(self.__class__, self).delete()

@@ -110,6 +110,10 @@ button > a, button > a:hover {
     text-decoration: none;
 }
 
+.hide {
+    display: none;
+}
+
 .background {
     background: center center no-repeat;
     background-size: cover;
@@ -1520,8 +1524,33 @@ button > a, button > a:hover {
     font-weight: bold;
 }
 
+.basket-items {
+display: flex;
+    padding: 20px 10px 10px;
+    margin: 0 auto;
+    align-items: flex-start;
+    justify-content: center;
+}
+
 .basket-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    list-style-type: none;
     margin-bottom: 10px;
+    min-height: 100px;
+}
+
+.basket-item-form {
+    display: flex;
+    justify-content: space-between;
+}
+
+.basket-item-quantity {
+    /*display: flex;*/
+    /*justify-content: flex-start;*/
+    min-width: 0;
 }
 
 .basket-item-none {

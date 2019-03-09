@@ -4,6 +4,7 @@ from django.http import HttpRequest, JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Basket
 from mainapp.models import Product
+from django.views.decorators.csrf import csrf_exempt
 
 
 @login_required
@@ -16,7 +17,8 @@ def basket(request: HttpRequest):
 
 
 @login_required
-def basket_add(request: HttpRequest, pk: int):
+@csrf_exempt
+def basket_change(request: HttpRequest, pk: int):
     product = get_object_or_404(Product, pk=pk)
 
     basket_product = Basket.objects.filter(user=request.user,
@@ -25,10 +27,10 @@ def basket_add(request: HttpRequest, pk: int):
     if not basket_product:
         basket_product = Basket(user=request.user, product=product)
 
-    basket_product.quantity += 1
-    basket_product.save()
-
     if request.is_ajax():
+        if request.method == "POST":
+            basket_product.quantity = request.POST['change_quantity']
+            basket_product.save()
         return JsonResponse({
             'quantity': basket_product.quantity,
             'cost': basket_product.cost,
@@ -43,29 +45,57 @@ def basket_add(request: HttpRequest, pk: int):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-@login_required
-def basket_remove(request: HttpRequest, pk: int):
-    basket_product = get_object_or_404(Basket,
-                                       user=request.user,
-                                       product=pk)
-
-    if basket_product.quantity != 1:
-        basket_product.quantity -= 1
-        basket_product.save()
-
-    if request.is_ajax():
-        return JsonResponse({
-            'quantity': basket_product.quantity,
-            'cost': basket_product.cost,
-            'total_quantity': basket_product.total_quantity,
-            'total_cost': basket_product.total_cost,
-        })
-
-    if 'login' in request.META.get('HTTP_REFERER'):
-        return HttpResponseRedirect(
-            reverse('catalog:product', args=[pk]))
-    else:
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+# @login_required
+# def basket_add(request: HttpRequest, pk: int):
+#     product = get_object_or_404(Product, pk=pk)
+#
+#     basket_product = Basket.objects.filter(user=request.user,
+#                                            product=product).first()
+#
+#     if not basket_product:
+#         basket_product = Basket(user=request.user, product=product)
+#
+#     basket_product.quantity += 1
+#     basket_product.save()
+#
+#     if request.is_ajax():
+#         return JsonResponse({
+#             'quantity': basket_product.quantity,
+#             'cost': basket_product.cost,
+#             'total_quantity': basket_product.total_quantity,
+#             'total_cost': basket_product.total_cost,
+#         })
+#
+#     if 'login' in request.META.get('HTTP_REFERER'):
+#         return HttpResponseRedirect(
+#             reverse('catalog:product', args=[product.id]))
+#     else:
+#         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+#
+#
+# @login_required
+# def basket_remove(request: HttpRequest, pk: int):
+#     basket_product = get_object_or_404(Basket,
+#                                        user=request.user,
+#                                        product=pk)
+#
+#     if basket_product.quantity != 1:
+#         basket_product.quantity -= 1
+#         basket_product.save()
+#
+#     if request.is_ajax():
+#         return JsonResponse({
+#             'quantity': basket_product.quantity,
+#             'cost': basket_product.cost,
+#             'total_quantity': basket_product.total_quantity,
+#             'total_cost': basket_product.total_cost,
+#         })
+#
+#     if 'login' in request.META.get('HTTP_REFERER'):
+#         return HttpResponseRedirect(
+#             reverse('catalog:product', args=[pk]))
+#     else:
+#         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @login_required
