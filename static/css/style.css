@@ -110,6 +110,11 @@ button > a, button > a:hover {
     text-decoration: none;
 }
 
+td {
+    text-align: center;
+}
+
+
 .hide {
     display: none;
 }
@@ -1665,6 +1670,51 @@ button > a, button > a:hover {
 .order-detail {
     display: flex;
 }
+
+.delete-row, .add-row {
+    min-width: 28px;
+    min-height: 28px;
+
+    font-weight: 700;
+
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+
+    box-sizing: border-box;
+
+    text-transform: uppercase;
+
+    color: #212121;
+    border-radius: 23px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px 1px rgba(33, 33, 33, .35);
+
+    align-items: center;
+    font-size: 13px;
+    padding: 5px 10px;
+    letter-spacing: 1px;
+    outline: none;
+    justify-content: center;
+}
+
+.add-row {
+    display: inline-block;
+    line-height: initial;
+}
+
+.delete-row:hover, .add-row:hover {
+    color: #212121;
+    background-color: #e8e9eb;
+    text-decoration: none;
+}
+
+.delete-row:active, .add-row:hover{
+    position: relative;
+    top: 2px;
+
+    -webkit-box-shadow: 0 0 5px 1px rgba(33, 33, 33, .35);
+    box-shadow: 0 0 5px 1px rgba(33, 33, 33, .35);
 
 @media screen and (max-width: 1300px) {
     .padding-products-block {

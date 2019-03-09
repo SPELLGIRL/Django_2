@@ -1,4 +1,12 @@
 window.onload = function () {
+
+    $('.formset_row').formset({
+        addText: 'добавить',
+        deleteText: 'удалить',
+        prefix: 'orderitems',
+        removed: deleteOrderItem
+    });
+
     let _quantity, _price, orderitem_num, delta_quantity, orderitem_quantity,
         delta_cost;
     let quantity_arr = [];
@@ -47,21 +55,33 @@ window.onload = function () {
         }
     });
 
-    $('.order_form').on('change', 'input[type="checkbox"]', function () {
-        let target = event.target;
-        orderitem_num = parseInt(target.name.replace('orderitems-', '').replace('-DELETE', ''));
-        if (target.checked) {
-            delta_quantity = -quantity_arr[orderitem_num];
-        } else {
-            delta_quantity = quantity_arr[orderitem_num];
-        }
-        orderSummaryUpdate(price_arr[orderitem_num], delta_quantity);
+    $('.order_form select').change(function () {
+        var target = event.target;
+        console.log(target);
     });
 
 
+    // $('.order_form').on('change', 'input[type="checkbox"]', function () {
+    //     let target = event.target;
+    //     orderitem_num = parseInt(target.name.replace('orderitems-', '').replace('-DELETE', ''));
+    //     if (target.checked) {
+    //         delta_quantity = -quantity_arr[orderitem_num];
+    //     } else {
+    //         delta_quantity = quantity_arr[orderitem_num];
+    //     }
+    //     orderSummaryUpdate(price_arr[orderitem_num], delta_quantity);
+    // });
+
+    function deleteOrderItem(row) {
+        let target_name = row[0].querySelector('input[type="number"]').name;
+        orderitem_num = parseInt(target_name.replace('orderitems-', '').replace('-quantity', ''));
+        delta_quantity = -quantity_arr[orderitem_num];
+        orderSummaryUpdate(price_arr[orderitem_num], delta_quantity);
+    }
+
     function price_format(price, quantity) {
         price = Number(price).toLocaleString('en');
-        let item = "$" + price + " (Обшая: $" + quantity*price + ")";
+        let item = "$" + price + " (Обшая: $" + quantity * price + ")";
         return item
     }
 
