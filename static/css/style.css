@@ -608,6 +608,11 @@ td {
     margin-right: 25px;
 }
 
+.admin-product-image:hover {
+    outline: 1px solid black;
+    z-index: 1;
+}
+
 .exclusive-products {
     display: -webkit-box;
     display: -ms-flexbox;

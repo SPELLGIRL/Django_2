@@ -102,6 +102,11 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
+    @staticmethod
+    def get_items():
+        return Product.objects.filter(is_active=True). \
+            order_by('category', 'title')
+
     def delete(self, *args, **kwargs):
         self.is_active = False
         self.save()

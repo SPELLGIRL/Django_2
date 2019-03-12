@@ -85,7 +85,7 @@ urlpatterns = [
          name='product_delete'),
 
     # orders
-    path('order/restore/<int:page>/', UpdateViews.OrderItemsUpdate.as_view(),
+    path('order/restore/<int:pk>/', UpdateViews.OrderItemsUpdate.as_view(),
          name='order_restore'),
     path('orders/list/', ListViews.OrderList.as_view(),
          name='orders'),

@@ -2,6 +2,11 @@
 {% load static %}
 {% load custom_tags %}
 
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/orders_scripts.js' %}"></script>
+{% endblock %}
+
 {% block content %}
     {% include 'ordersapp/include/inc_order_summary.html' %}
     <div class="order_form">

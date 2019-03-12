@@ -18,7 +18,7 @@
             <p>{{ object.updated|date:"Y-m-d H:i:s" }}</p>
             <p>{{ object.get_status_display }}</p>
             <p class="order_total_quantity">{{ object.get_total_quantity }}</p>
-            <p>$<span class="order_total_cost">{{ object.get_total_cost }}</span></p>
+            <p class="order_total_cost">{{ object.get_total_cost|currency }}</p>
         </div>
     </div>
 {% else %}
