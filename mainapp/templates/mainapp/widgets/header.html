@@ -67,8 +67,8 @@
                 <a href="{% url 'basket:view' %}" alt="basket" class="basket">
                     <span class="basket-info">
                         {% if basket %}
-                            <p class="basket-item-total-quantity">{{ basket.0.total_quantity }} товаров</p>
-                            <p class="basket-item-total-cost">{{ basket.0.total_cost|currency }}</p>
+                            <p><span class="basket-item-total-quantity">{{ basket.0.total_quantity }}</span> товаров</p>
+                            <p>$<span class="basket-item-total-cost">{{ basket.0.total_cost|normalize}}</span></p>
                         {% endif %}
                     </span>
                 </a>

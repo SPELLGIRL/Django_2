@@ -95,7 +95,12 @@ class OrderItemsUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             data['orderitems'] = orderformset(self.request.POST,
                                               instance=self.object)
         else:
-            data['orderitems'] = orderformset(instance=self.object)
+            formset = orderformset(instance=self.object)
+            for form in formset.forms:
+                if form.instance.pk:
+                    form.initial['price'] = form.instance.product.price
+                    # form.initial['price'] = f'{form.instance.product.price} * {form.instance.quantity} = ${form.instance.get_product_cost}'
+            data['orderitems'] = formset
 
         return data
 

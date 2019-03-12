@@ -17,6 +17,10 @@ def currency(string):
     return f'${string}'
 
 
+@register.filter(name='normalize')
+def normalize(string):
+    return string.normalize()
+
 # @register.filter(name='is_active_list')
 # def is_active_list(object_list):
 #     object_list = object_list.filter(is_active='True')

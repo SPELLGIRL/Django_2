@@ -110,6 +110,15 @@ button > a, button > a:hover {
     text-decoration: none;
 }
 
+td {
+    text-align: center;
+}
+
+
+.hide {
+    display: none;
+}
+
 .background {
     background: center center no-repeat;
     background-size: cover;
@@ -200,7 +209,6 @@ button > a, button > a:hover {
     margin: .5rem;
     justify-content: center !important;
 }
-
 
 
 .menu__link {
@@ -1237,7 +1245,6 @@ button > a, button > a:hover {
     justify-content: space-around;
     width: 100%;
     margin-top: 5px;
-    -ms-flex-pack: distribute;
 }
 
 .confirmation-page__form {
@@ -1254,7 +1261,6 @@ button > a, button > a:hover {
 
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    -ms-flex-pack: distribute;
     justify-content: space-around;
     -webkit-box-align: end;
     -ms-flex-align: end;
@@ -1496,6 +1502,7 @@ button > a, button > a:hover {
 .basket-products {
     display: flex;
     flex-direction: column;
+    align-self: center;
 }
 
 .basket {
@@ -1520,8 +1527,35 @@ button > a, button > a:hover {
     font-weight: bold;
 }
 
+.basket-items {
+    display: flex;
+    padding-top: 10px;
+    /*padding: 20px 10px 10px;*/
+    /*margin: 0 auto;*/
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
 .basket-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    list-style-type: none;
     margin-bottom: 10px;
+    min-height: 100px;
+}
+
+.basket-item-form {
+    display: flex;
+    justify-content: space-between;
+}
+
+.basket-item-quantity {
+    /*display: flex;*/
+    /*justify-content: flex-start;*/
+    min-width: 0;
 }
 
 .basket-item-none {
@@ -1634,6 +1668,52 @@ button > a, button > a:hover {
     display: flex;
 }
 
+.delete-row, .add-row {
+    min-width: 28px;
+    min-height: 28px;
+
+    font-weight: 700;
+
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+
+    box-sizing: border-box;
+
+    text-transform: uppercase;
+
+    color: #212121;
+    border-radius: 23px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px 1px rgba(33, 33, 33, .35);
+
+    align-items: center;
+    font-size: 13px;
+    padding: 5px 10px;
+    letter-spacing: 1px;
+    outline: none;
+    justify-content: center;
+}
+
+.add-row {
+    display: inline-block;
+    line-height: initial;
+}
+
+.delete-row:hover, .add-row:hover {
+    color: #212121;
+    background-color: #e8e9eb;
+    text-decoration: none;
+}
+
+.delete-row:active, .add-row:hover {
+    position: relative;
+    top: 2px;
+
+    -webkit-box-shadow: 0 0 5px 1px rgba(33, 33, 33, .35);
+    box-shadow: 0 0 5px 1px rgba(33, 33, 33, .35);
+}
+
 @media screen and (max-width: 1300px) {
     .padding-products-block {
         padding-right: 10px;
@@ -1641,7 +1721,6 @@ button > a, button > a:hover {
     }
 
     .products-heading {
-        -ms-flex-pack: distribute;
         justify-content: space-around;
     }
 

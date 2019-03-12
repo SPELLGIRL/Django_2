@@ -4,51 +4,51 @@
 {% block content %}
     <h4 class="basket-item-none" {% if basket %}hidden{% endif %}>Товаров
         пока нет</h4>
+    <div class="admin-control">
+            <a href="{% url 'ordersapp:order_create' %}"
+               class="button input-form__button admin-control__button">
+                Оформить
+            </a>
+        </div>
     <div class="basket-products">
+
         {% if basket %}
             <div class="basket-total-counters">
-                <p>Итого: <span
-                        class="basket-item-total-cost">{{ basket.0.total_cost|floatformat:0|currency }}</span>
+                <p>Итого: $<span
+                        class="basket-item-total-cost">{{ basket.0.total_cost|normalize }}</span>
                 </p>
                 <p>Общее количество: <span
-                        class="basket-item-total-quantity">({{ basket.0.total_quantity }}</span>
-                    шт)</p><br>
+                        class="basket-item-total-quantity">{{ basket.0.total_quantity }}</span>
+                    шт.</p><br>
             </div>
             <ul>
                 {% for item in basket %}
                     <li class="basket-item basket-item-{{ item.product_id }}">
-                        {% if forloop.counter <= 12 %}
-                            <p>
-                                <a href="{% url 'catalog:product' item.product_id %}">
-                                    {{ item.product.title|title }}
-                                </a>
-                            </p>
+                        <p>
+                            <a href="{% url 'catalog:product' item.product_id %}">
+                                {{ item.product.title|title }}
+                            </a>
+                        </p>
+                        <p>
                             Стоимость:
-                            <span class="basket-item-price">{{ item.product.price|currency }}</span>
+                            $<span
+                                class="basket-item-price">{{ item.product.price|normalize }}</span>
                             (Общая:
-                            <span class="basket-item-cost">{{ item.cost }}</span>
-                            $)<br>
+                            $<span
+                                class="basket-item-cost">{{ item.cost|normalize }}</span>)
+                        </p>
+                        <p class="basket-item-form">
                             Количество:
-
-                            <button class="basket-item-remove"
-                                    {% if item.quantity == 1 %}
-                                    hidden
-                                    {% endif %}
-                                    data-id="{{ item.product_id }}">
-                                -
-                            </button>
-
-                            <span class="basket-item-quantity">{{ item.quantity }}</span>
-                            <button class="basket-item-add"
-                                    data-id="{{ item.product_id }}">
-                                +
-                            </button>
-
-                            <button class="basket-item-delete"
-                                    data-id="{{ item.product_id }}">
-                                Удалить
-                            </button>
-                        {% endif %}
+                            {% csrf_token %}
+                            <input type="number" min="1"
+                                   class="form-control basket-item-quantity"
+                                   value="{{ item.quantity }}"
+                                   data-id="{{ item.product_id }}">
+                        </p>
+                        <button class="basket-item-delete"
+                                data-id="{{ item.product_id }}">
+                            Удалить
+                        </button>
                     </li>
                 {% endfor %}
             </ul>
