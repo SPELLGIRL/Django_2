@@ -1,0 +1,31 @@
+### PyCharm ###
+.idea/
+**/__pycache__
+*.py[cod]
+run.bat
+smtp_debug.bat
+
+### OSX ###
+.DS_Store
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+### Django ###
+*.log
+*.pot
+*.pyc
+*.py[cod]
+__pycache__/
+local_settings.py
+venv
+django2
+.venv
+.env
+
+
+### Temp folders ###
+temp
