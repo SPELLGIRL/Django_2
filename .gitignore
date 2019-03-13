@@ -18,7 +18,6 @@ Icon
 *.log
 *.pot
 *.pyc
-*.py[cod]
 __pycache__/
 local_settings.py
 venv
@@ -29,3 +28,4 @@ django2
 
 ### Temp folders ###
 temp
+*.sock
