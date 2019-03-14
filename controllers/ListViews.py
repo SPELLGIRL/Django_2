@@ -72,8 +72,12 @@ class OrderList(LoginRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        query_set = Order.objects.filter(user=self.request.user,
-                                         is_active=True)
+        if not (
+                self.request.resolver_match.namespace == 'admin' and self.request.user.is_superuser):
+            query_set = Order.objects.filter(user=self.request.user,
+                                             is_active=True)
+        else:
+            query_set = Order.objects.all().order_by('-is_active')
 
         return query_set
 
@@ -81,7 +85,7 @@ class OrderList(LoginRequiredMixin, ListView):
         if self.request.resolver_match.namespace == 'admin':
             if self.request.user.is_superuser:
                 self.template_name = 'adminapp/orders/index.html'
-                self.query_set = Order.objects.all().order_by('-is_active')
+                # self.query_set = Order.objects.all().order_by('-is_active')
             else:
                 return HttpResponseRedirect(reverse('auth:index'))
         return super().render_to_response(context, **response_kwargs)

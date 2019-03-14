@@ -1,0 +1,5 @@
+django
+pillow
+django-cleanup
+social_auth_app_django
+requests

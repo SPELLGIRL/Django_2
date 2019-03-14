@@ -67,7 +67,7 @@ class ProductDeleteView(DeleteView):
 
 class OrderDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Order
-    success_url = reverse_lazy('ordersapp:orders_list')
+    success_url = reverse_lazy('order:orders_list')
 
     def test_func(self):
         check = self.request.user == get_object_or_404(Order, id=self.kwargs[

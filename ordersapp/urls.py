@@ -17,4 +17,5 @@ urlpatterns = [
          name='order_update'),
     path('delete/<int:pk>/', DeleteViews.OrderDelete.as_view(),
          name='order_delete'),
+    path('product/<int:pk>/price/', ordersapp.get_product_price),
 ]

@@ -27,6 +27,9 @@ def basket_change(request: HttpRequest, pk: int):
     if not basket_product:
         basket_product = Basket(user=request.user, product=product)
 
+    basket_product.quantity += 1
+    basket_product.save()
+
     if request.is_ajax():
         if request.method == "POST":
             basket_product.quantity = int(request.POST['change_quantity'])
