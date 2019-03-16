@@ -12,6 +12,7 @@ django==2.1.7
 idna==2.8                 # via requests
 oauthlib==3.0.1           # via requests-oauthlib, social-auth-core
 pillow==5.4.1
+psycopg2-binary==2.7.7
 pyjwt==1.7.1              # via social-auth-core
 python3-openid==3.1.0     # via social-auth-core
 pytz==2018.9              # via django
