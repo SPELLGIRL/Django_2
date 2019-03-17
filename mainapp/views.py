@@ -7,24 +7,27 @@ import os
 
 
 def index(request: HttpRequest, current_product_category=''):
-    new_menu_check = NewMenu.objects.filter(category__is_active=True)
+    new_menu_check = NewMenu.objects.select_related('category').filter(
+        category__is_active=True).values('title', 'category_id')
     if current_product_category != '':
         get_object_or_404(NewMenu,
                           category__name=current_product_category,
                           pk__gt=1,
                           category__is_active=True)
-        new_menu_products = list(Product.objects.filter(
-            category__name=current_product_category, is_active=True))
+        new_menu_products = list(
+            Product.objects.prefetch_related('category').filter(
+                category__name=current_product_category, is_active=True))
     else:
         if new_menu_check:
-            new_menu_products = list(Product.objects.filter(
-                category__name=new_menu_check.first().category.name,
-                is_active=True))
+            new_menu_products = list(
+                Product.objects.prefetch_related('category').filter(
+                    category=new_menu_check[0]['category_id'],
+                    is_active=True))
         else:
             new_menu_products = []
 
     if new_menu_check:
-        new_menu_links = [{'title': new_menu_check.first().title,
+        new_menu_links = [{'title': new_menu_check[0]['title'],
                            'category__name': ''}] + list(
             new_menu_check.values('title', 'category__name')[1:])
     else:
@@ -40,9 +43,11 @@ def index(request: HttpRequest, current_product_category=''):
     }
 
     for category in used_product_categories:
-        if Category.objects.filter(name=category, is_active=True).first():
-            _temp = list(Product.objects.filter(category__name=category,
-                                                is_active=True))
+        if Category.objects.filter(name=category, is_active=True).values(
+                'id').first():
+            _temp = list(Product.objects.prefetch_related('category').filter(
+                category__name=category,
+                is_active=True).values('id'))
             if _temp:
                 context[category + '_products'] = sample(_temp,
                                                          len(_temp))
