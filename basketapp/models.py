@@ -32,7 +32,7 @@ class Basket(models.Model):
     @cached_property
     def get_items_cached(self):
         return self.user.basket.select_related().order_by(
-            'product__category')
+            'product_id')
 
     def get_item(pk):
         return Basket.objects.filter(pk=pk).first()

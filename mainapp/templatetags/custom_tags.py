@@ -14,7 +14,7 @@ def media_folder_files(string):
 
 @register.filter(name='currency')
 def currency(string):
-    return f'${string}'
+    return f'${string.normalize()}'
 
 
 @register.filter(name='normalize')
