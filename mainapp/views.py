@@ -6,6 +6,55 @@ from random import sample
 import os
 from django.conf import settings
 from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+from django.template.loader import render_to_string
+from django.http import JsonResponse
+
+
+def products_ajax(request: HttpRequest, current_product_category='', page=1):
+    if current_product_category != '':
+        get_object_or_404(CatalogMenu,
+                          category__name=current_product_category,
+                          category__is_active=True)
+        catalog_menu_products = get_products_by_category_price_cached(
+            current_product_category)
+    else:
+        catalog_menu_products = get_products_by_category_price_cached('')
+
+    provider = Paginator(catalog_menu_products, 6)
+
+    try:
+        products_provider = provider.page(page)
+    except PageNotAnInteger:
+        products_provider = provider.page(1)
+    except EmptyPage:
+        products_provider = provider.page(provider.num_pages)
+
+    catalog_menu_links = get_catalog_menu_links_cached()
+
+    used_product_categories = ['exclusive', 'promo']
+
+    context = {
+        'title': 'Catalog',
+        'catalog_menu_links': catalog_menu_links,
+        'current_product_category': current_product_category,
+        'provider': products_provider,
+    }
+
+    for category in used_product_categories:
+        if Category.objects.filter(name=category, is_active=True).first():
+            _temp = list(Product.objects.filter(category__name=category,
+                                                is_active=True))
+            if _temp:
+                context[category + '_products'] = sample(_temp,
+                                                         len(_temp))
+
+    result = render_to_string(
+        'mainapp/include/inc_products_list_content.html',
+        context=context,
+        request=request)
+
+    return JsonResponse({'result': result})
 
 
 def index(request: HttpRequest, current_product_category=''):
@@ -50,10 +99,10 @@ def products(request: HttpRequest, current_product_category='', page=1):
         get_object_or_404(CatalogMenu,
                           category__name=current_product_category,
                           category__is_active=True)
-        catalog_menu_products = get_products_by_category_random(
+        catalog_menu_products = get_products_by_category_price_cached(
             current_product_category)
     else:
-        catalog_menu_products = get_products_by_category_random('')
+        catalog_menu_products = get_products_by_category_price_cached('')
 
     provider = Paginator(catalog_menu_products, 6)
 
