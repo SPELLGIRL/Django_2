@@ -4,3 +4,4 @@ django-cleanup
 social_auth_app_django
 requests
 psycopg2-binary
+python-memcached
