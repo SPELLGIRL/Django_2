@@ -26,4 +26,4 @@ class OrderItemForm(forms.ModelForm):
         self.fields['product'].queryset = Product.get_items().select_related()
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-            field.widget.attrs['min'] = 1
+            field.widget.attrs['min'] = 0
