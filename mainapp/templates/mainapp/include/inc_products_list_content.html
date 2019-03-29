@@ -1,0 +1,34 @@
+{% load staticfiles %}
+
+<div class="products-heading">
+    {% include 'mainapp/widgets/catalog_menu.html' %}
+</div>
+<div class="trending-products">
+    {% with size=370 %}
+        {% for item in provider %}
+            {% include 'mainapp/include/inc_product_preview.html' %}
+        {% endfor %}
+    {% endwith %}
+</div>
+<div class="product-pagination">
+    {% if provider.has_previous %}
+        <a href="
+                {% url 'catalog:index' %}{% if current_product_category %}{{ current_product_category }}/{% endif %}{{ provider.previous_page_number }}/"
+           class="button product-pagination__button">
+            <i class="fas fa-angle-left"></i>
+        </a>
+    {% endif %}
+    <a href="
+            {% url 'catalog:index' %}{% if current_product_category %}{{ current_product_category }}/{% endif %}{{ provider.number }}/"
+       class="refresh">
+        <i class="fas fa-sync-alt"></i>
+    </a>
+    {% if provider.has_next %}
+        <a href="
+                {% url 'catalog:index' %}{% if current_product_category %}{{ current_product_category }}/{% endif %}{{ provider.next_page_number }}/"
+           class="button product-pagination__button">
+            <i class="fas fa-angle-right"></i>
+        </a>
+
+    {% endif %}
+</div>

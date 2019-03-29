@@ -1,0 +1,11 @@
+django
+pillow
+django-cleanup
+social_auth_app_django
+requests
+psycopg2-binary
+wheel
+django-debug-toolbar
+django-debug-toolbar-template-profiler
+django-extensions
+pydotplus

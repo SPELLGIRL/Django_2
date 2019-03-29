@@ -28,7 +28,8 @@ class Order(models.Model):
                               max_length=3,
                               choices=ORDER_STATUS_CHOICES,
                               default=FORMING)
-    is_active = models.BooleanField(verbose_name='активен', default=True)
+    is_active = models.BooleanField(db_index=True, verbose_name='активен',
+                                    default=True)
 
     class Meta:
         ordering = ('-created',)
@@ -37,6 +38,14 @@ class Order(models.Model):
 
     def __str__(self):
         return f'Текущий заказ: {self.id}'
+
+    def get_summary(self):
+        items = self.orderitems.select_related()
+        return {
+            'total_cost': sum(
+                list(map(lambda x: x.quantity * x.product.price, items))),
+            'total_quantity': sum(list(map(lambda x: x.quantity, items)))
+        }
 
     def get_total_quantity(self):
         items = self.orderitems.select_related()

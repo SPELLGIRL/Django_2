@@ -2,9 +2,12 @@ from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, \
     reverse
 from django.http import HttpRequest, JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+
+from django.db.models import F
 from .models import Basket
 from mainapp.models import Product
-from django.views.decorators.csrf import csrf_exempt
+
 
 
 @login_required
@@ -27,8 +30,8 @@ def basket_change(request: HttpRequest, pk: int):
     if not basket_product:
         basket_product = Basket(user=request.user, product=product)
 
-    basket_product.quantity += 1
-    basket_product.save()
+    basket_product.quantity = F('quantity') + 1
+    # basket_product.save()
 
     if request.is_ajax():
         if request.method == "POST":

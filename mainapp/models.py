@@ -8,7 +8,7 @@ class Category(models.Model):
         verbose_name='Категория'
     )
 
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(db_index=True, default=True)
 
     def __str__(self):
         return self.name
@@ -97,15 +97,16 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField(verbose_name='Количество на складе',
                                            default=0)
 
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(db_index=True, default=True)
 
     def __str__(self):
         return self.title
 
     @staticmethod
     def get_items():
-        return Product.objects.filter(is_active=True). \
-            order_by('category', 'title')
+        return Product.objects.prefetch_related('category').filter(
+            is_active=True).order_by('category',
+                                     'title')
 
     def delete(self, *args, **kwargs):
         self.is_active = False

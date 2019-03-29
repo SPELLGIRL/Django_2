@@ -39,6 +39,9 @@ class CategoryListView(ListView):
 
         return parent_context
 
+    def get_queryset(self):
+        return Category.objects.all().order_by('-is_active', 'name')
+
     @method_decorator(user_passes_test(lambda user: user.is_superuser))
     def dispatch(self, request, *args, **kwargs):
         return super(CategoryListView, self).dispatch(request, *args, **kwargs)

@@ -62,6 +62,9 @@ class ProductDetailView(DetailView):
 class OrderRead(DetailView):
     model = Order
 
+    def get_queryset(self):
+        return Order.objects.prefetch_related('orderitems', 'user').all()
+
     def get_context_data(self, **kwargs):
         context = super(OrderRead, self).get_context_data(**kwargs)
         context['title'] = 'заказ/просмотр'

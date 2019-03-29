@@ -9,6 +9,10 @@ from django.db import transaction
 from django.forms import inlineformset_factory
 from ordersapp.forms import OrderItemForm
 
+from adminapp.views.categories import db_profile_by_type
+from django.db import connection
+from django.db.models import F
+
 from authapp.models import CustomUser
 from mainapp.models import Category, Product
 from adminapp.models.users import UserEditForm
@@ -46,6 +50,17 @@ class CategoryUpdateView(UpdateView):
         parent_context['title'] = 'Edit category'
 
         return parent_context
+
+    def form_valid(self, form):
+        if 'discount' in form.cleaned_data:
+            discount = form.cleaned_data['discount']
+            if discount:
+                self.object.products.all().update(
+                    price=F('price') * (1 - discount / 100))
+                db_profile_by_type(self.__class__, 'UPDATE',
+                                   connection.queries)
+
+        return super().form_valid(form)
 
     @method_decorator(user_passes_test(lambda user: user.is_superuser))
     def dispatch(self, request, *args, **kwargs):
@@ -95,7 +110,8 @@ class OrderItemsUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             data['orderitems'] = orderformset(self.request.POST,
                                               instance=self.object)
         else:
-            formset = orderformset(instance=self.object)
+            queryset = self.object.orderitems.select_related('product')
+            formset = orderformset(instance=self.object, queryset=queryset)
             for form in formset.forms:
                 if form.instance.pk:
                     form.initial['price'] = form.instance.product.price

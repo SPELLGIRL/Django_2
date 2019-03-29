@@ -4,31 +4,75 @@ from django.http import HttpRequest
 from .models import Product, Category, CatalogMenu, NewMenu, Address
 from random import sample
 import os
+from django.conf import settings
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+from django.template.loader import render_to_string
+from django.http import JsonResponse
+
+
+def products_ajax(request: HttpRequest, current_product_category='', page=1):
+    if current_product_category != '':
+        get_object_or_404(CatalogMenu,
+                          category__name=current_product_category,
+                          category__is_active=True)
+        catalog_menu_products = get_products_by_category_price_cached(
+            current_product_category)
+    else:
+        catalog_menu_products = get_products_by_category_price_cached('')
+
+    provider = Paginator(catalog_menu_products, 6)
+
+    try:
+        products_provider = provider.page(page)
+    except PageNotAnInteger:
+        products_provider = provider.page(1)
+    except EmptyPage:
+        products_provider = provider.page(provider.num_pages)
+
+    catalog_menu_links = get_catalog_menu_links_cached()
+
+    used_product_categories = ['exclusive', 'promo']
+
+    context = {
+        'title': 'Catalog',
+        'catalog_menu_links': catalog_menu_links,
+        'current_product_category': current_product_category,
+        'provider': products_provider,
+    }
+
+    for category in used_product_categories:
+        if Category.objects.filter(name=category, is_active=True).first():
+            _temp = list(Product.objects.filter(category__name=category,
+                                                is_active=True))
+            if _temp:
+                context[category + '_products'] = sample(_temp,
+                                                         len(_temp))
+
+    result = render_to_string(
+        'mainapp/include/inc_products_list_content.html',
+        context=context,
+        request=request)
+
+    return JsonResponse({'result': result})
 
 
 def index(request: HttpRequest, current_product_category=''):
-    new_menu_check = NewMenu.objects.filter(category__is_active=True)
     if current_product_category != '':
         get_object_or_404(NewMenu,
                           category__name=current_product_category,
                           pk__gt=1,
                           category__is_active=True)
-        new_menu_products = list(Product.objects.filter(
-            category__name=current_product_category, is_active=True))
+        new_menu_products = get_products_by_category_random(
+            current_product_category)
     else:
-        if new_menu_check:
-            new_menu_products = list(Product.objects.filter(
-                category__name=new_menu_check.first().category.name,
-                is_active=True))
+        if get_new_menu_check_cached():
+            new_menu_products = get_products_by_category_random(
+                get_new_menu_check()[0]['category__name'])
         else:
             new_menu_products = []
 
-    if new_menu_check:
-        new_menu_links = [{'title': new_menu_check.first().title,
-                           'category__name': ''}] + list(
-            new_menu_check.values('title', 'category__name')[1:])
-    else:
-        new_menu_links = []
+    new_menu_links = get_new_menu_links_cached()
 
     used_product_categories = ['trending', 'exclusive', 'promo', 'hot']
 
@@ -40,12 +84,12 @@ def index(request: HttpRequest, current_product_category=''):
     }
 
     for category in used_product_categories:
-        if Category.objects.filter(name=category, is_active=True).first():
-            _temp = list(Product.objects.filter(category__name=category,
-                                                is_active=True))
-            if _temp:
-                context[category + '_products'] = sample(_temp,
-                                                         len(_temp))
+        if Category.objects.filter(name=category, is_active=True).values(
+                'id').first():
+            if get_products_by_category_random(category):
+                context[
+                    category + '_products'] = get_products_by_category_random(
+                    category)
 
     return render(request, 'mainapp/index.html', context)
 
@@ -55,12 +99,10 @@ def products(request: HttpRequest, current_product_category='', page=1):
         get_object_or_404(CatalogMenu,
                           category__name=current_product_category,
                           category__is_active=True)
-        catalog_menu_products = list(Product.objects.filter(
-            category__name=current_product_category, is_active=True).order_by(
-            'price'))
+        catalog_menu_products = get_products_by_category_price_cached(
+            current_product_category)
     else:
-        catalog_menu_products = list(
-            Product.objects.filter(is_active=True))
+        catalog_menu_products = get_products_by_category_price_cached('')
 
     provider = Paginator(catalog_menu_products, 6)
 
@@ -71,10 +113,7 @@ def products(request: HttpRequest, current_product_category='', page=1):
     except EmptyPage:
         products_provider = provider.page(provider.num_pages)
 
-    catalog_menu_links = [{'title': 'all',
-                           'category__name': ''}] + list(
-        CatalogMenu.objects.filter(category__is_active=True).values('title',
-                                                                    'category__name'))
+    catalog_menu_links = get_catalog_menu_links_cached()
 
     used_product_categories = ['exclusive', 'promo']
 
@@ -97,7 +136,7 @@ def products(request: HttpRequest, current_product_category='', page=1):
 
 
 def details(request: HttpRequest, product_id=None, color=None, size=None):
-    current_product = get_object_or_404(Product, pk=product_id, is_active=True)
+    current_product = get_product(product_id)
 
     if current_product.big_img_path and size is None:
         image_link = current_product.big_img_path.url
@@ -111,10 +150,8 @@ def details(request: HttpRequest, product_id=None, color=None, size=None):
     else:
         image_link = ''
 
-    catalog_menu_links = [{'title': 'all',
-                           'category__name': ''}] + list(
-        CatalogMenu.objects.filter(category__is_active=True).values('title',
-                                                                    'category__name'))
+    catalog_menu_links = get_catalog_menu_links()
+
     same_products = list(
         Product.objects.exclude(pk=product_id).filter(is_active=True,
                                                       category__in=current_product.category.filter(
@@ -141,3 +178,106 @@ def contacts(request: HttpRequest):
         'title': 'Contacts',
     }
     return render(request, 'mainapp/contacts.html', context)
+
+
+def get_catalog_menu_links():
+    catalog_menu_links = [{'title': 'all',
+                           'category__name': ''}] + list(
+        CatalogMenu.objects.select_related('category').filter(
+            category__is_active=True).values(
+            'title',
+            'category__name'))
+
+    return catalog_menu_links
+
+
+def get_catalog_menu_links_cached():
+    if settings.LOW_CACHE:
+        key = 'catalog_menu_links_cached'
+        catalog_menu_links_cached = cache.get(key)
+        if catalog_menu_links_cached is None:
+            catalog_menu_links_cached = get_catalog_menu_links()
+            cache.set(key, catalog_menu_links_cached)
+        return catalog_menu_links_cached
+    else:
+        return get_catalog_menu_links()
+
+
+def get_new_menu_check():
+    return NewMenu.objects.select_related('category').filter(
+        category__is_active=True).values('title', 'category_id',
+                                         'category__name')
+
+
+def get_new_menu_check_cached():
+    if settings.LOW_CACHE:
+        key = 'new_menu_check_cached'
+        new_menu_check_cached = cache.get(key)
+        if new_menu_check_cached is None:
+            new_menu_check_cached = get_new_menu_check()
+        return new_menu_check_cached
+    else:
+        return get_new_menu_check()
+
+
+def get_new_menu_links():
+    if get_new_menu_check_cached():
+        new_menu_links = [{'title': get_new_menu_check_cached()[0]['title'],
+                           'category__name': ''}] + list(
+            get_new_menu_check_cached().values('title', 'category__name')[1:])
+    else:
+        new_menu_links = []
+
+    return new_menu_links
+
+
+def get_new_menu_links_cached():
+    if settings.LOW_CACHE:
+        key = 'new_menu_links_cached'
+        new_menu_links_cached = cache.get(key)
+        if new_menu_links_cached is None:
+            new_menu_links_cached = get_new_menu_links()
+            cache.set(key, new_menu_links_cached)
+        return new_menu_links_cached
+    else:
+        return get_new_menu_links()
+
+
+def get_products_by_category_price(category):
+    if category == '':
+        products_price = Product.objects.filter(is_active=True).order_by(
+            'price')
+    else:
+        products_price = Product.objects.prefetch_related('category').filter(
+            category__name=category, is_active=True).order_by('price')
+    return products_price
+
+
+def get_products_by_category_price_cached(category):
+    if settings.LOW_CACHE:
+        key = f'products_by_category_price_cached{category}'
+        products_by_category_price_cached = cache.get(key)
+        if products_by_category_price_cached is None:
+            products_by_category_price_cached = get_products_by_category_price(
+                category)
+            cache.set(key, products_by_category_price_cached)
+        return products_by_category_price_cached
+    else:
+        return get_products_by_category_price(category)
+
+
+def get_products_by_category_random(category):
+    _temp = list(get_products_by_category_price_cached(category))
+    return sample(_temp, len(_temp))
+
+
+def get_product(product_id):
+    if settings.LOW_CACHE:
+        key = f'product_{product_id}'
+        product = cache.get(key)
+        if product is None:
+            product = get_object_or_404(Product, pk=product_id, is_active=True)
+            cache.set(key, product)
+        return product
+    else:
+        return get_object_or_404(Product, pk=product_id, is_active=True)

@@ -550,6 +550,7 @@ td {
 .new-menu__link_active, .new-menu__link:hover {
     color: #212121;
     border-bottom: 3px solid #212121;
+    text-decoration: none;
 }
 
 .new-menu__list {

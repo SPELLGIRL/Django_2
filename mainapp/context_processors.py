@@ -5,7 +5,7 @@ from .models import MainMenu
 
 def main_menu(request: HttpRequest):
     if request.user.is_authenticated:
-        load_basket = Basket.objects.filter(user=request.user)
+        load_basket = request.user.basket.select_related()
     else:
         load_basket = None
 

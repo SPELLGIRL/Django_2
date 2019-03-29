@@ -59,6 +59,12 @@ class ProductCreateView(CreateView):
     template_name = 'adminapp/products/update.html'
     form_class = ProductEditForm
 
+    def get_initial(self):
+        initial = super(ProductCreateView, self).get_initial()
+        initial.update(
+            {'category': get_object_or_404(Category, pk=self.kwargs['pk'])})
+        return initial
+
     def get_success_url(self):
         return reverse('admin:products', args=[self.kwargs['pk']])
 
